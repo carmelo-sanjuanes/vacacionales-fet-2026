@@ -1,0 +1,2729 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cartas de Solicitud de Cursos Vacacionales - Ingeniería Eléctrica FET</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #043d1a;
+            --primary-dark: #02230f;
+            --gold: #ffd700;
+            --gold-dark: #d4af37;
+            --text-dark: #1e293b;
+            --border-color: #cbd5e1;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--text-dark);
+            background-color: #e2e8f0;
+            line-height: 1.5;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        /* Barra de herramientas superior fija */
+        .toolbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, #043d1a, #0c4a23);
+            color: white;
+            padding: 0.85rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .toolbar-title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .toolbar-title span {
+            color: var(--gold);
+        }
+
+        .toolbar-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .btn-action {
+            background-color: var(--gold);
+            color: #043d1a;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 0.55rem 1.2rem;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .btn-action:hover {
+            background-color: #ffe44d;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background-color: rgba(255,255,255,0.15);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255,255,255,0.25);
+            color: white;
+        }
+
+        /* Contenedor de hojas */
+        .sheets-container {
+            max-width: 860px;
+            margin: 1.5rem auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Hoja simulada tamaño carta */
+        .page-sheet {
+            background-color: white;
+            width: 100%;
+            min-height: 1100px;
+            padding: 2.8rem 3rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border-radius: 4px;
+            position: relative;
+        }
+
+        /* Membrete institucional */
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .header-logo i {
+            font-size: 2.2rem;
+            color: var(--primary);
+        }
+
+        .header-text h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15rem;
+            color: var(--primary);
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .header-text p {
+            font-size: 0.82rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .header-meta {
+            text-align: right;
+            font-size: 0.85rem;
+            color: #475569;
+        }
+
+        /* Destinatario */
+        .letter-recipient {
+            margin-bottom: 1.3rem;
+            line-height: 1.4;
+            color: var(--primary);
+        }
+
+        .letter-recipient .title {
+            font-weight: 700;
+            font-size: 1.02rem;
+        }
+
+        .letter-recipient .cargo {
+            font-size: 0.93rem;
+            font-weight: 600;
+        }
+
+        .letter-recipient .institution {
+            font-size: 0.9rem;
+            color: #334155;
+        }
+
+        /* Asunto */
+        .letter-subject {
+            background-color: #f8fafc;
+            border-left: 4px solid var(--primary);
+            padding: 0.6rem 0.9rem;
+            margin-bottom: 1.2rem;
+            font-size: 0.92rem;
+            line-height: 1.4;
+        }
+
+        .letter-subject strong {
+            color: var(--primary);
+        }
+
+        /* Cuerpo */
+        .letter-body {
+            font-size: 0.92rem;
+            text-align: justify;
+            margin-bottom: 1.2rem;
+            color: #334155;
+        }
+
+        .letter-body p {
+            margin-bottom: 0.75rem;
+        }
+
+        /* Resumen de curso */
+        .course-summary-box {
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 6px;
+            padding: 0.75rem 1rem;
+            margin: 0.8rem 0;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            font-size: 0.88rem;
+        }
+
+        .course-summary-box .item strong {
+            color: var(--primary);
+        }
+
+        /* Tabla de estudiantes */
+        .students-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.2rem 0;
+            font-size: 0.84rem;
+        }
+
+        .students-table th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+            text-align: left;
+            padding: 0.5rem 0.6rem;
+            border: 1px solid var(--primary);
+        }
+
+        .students-table th.center, .students-table td.center {
+            text-align: center;
+        }
+
+        .students-table td {
+            padding: 0.45rem 0.6rem;
+            border: 1px solid #cbd5e1;
+            color: #1e293b;
+        }
+
+        .students-table tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        .signature-cell {
+            width: 130px;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 0.75rem;
+        }
+
+        /* Pie de firma */
+        .letter-footer {
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: #334155;
+        }
+
+        .sign-placeholder {
+            margin-top: 2rem;
+            display: inline-block;
+            border-top: 1px solid #475569;
+            padding-top: 0.3rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        /* Badge contador */
+        .counter-badge {
+            background-color: #043d1a;
+            color: var(--gold);
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            display: inline-block;
+        }
+
+        /* Reglas de impresión */
+        @media print {
+            body {
+                background-color: white;
+            }
+            .toolbar {
+                display: none;
+            }
+            .sheets-container {
+                max-width: 100%;
+                margin: 0;
+                gap: 0;
+            }
+            .page-sheet {
+                box-shadow: none;
+                padding: 1.8cm 1.8cm;
+                min-height: auto;
+                page-break-after: always;
+                break-after: page;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="toolbar">
+        <div class="toolbar-title">
+            <i class="fa-solid fa-file-contract"></i>
+            Cartas Oficiales de Solicitud de Cursos Vacacionales <span>| FET Neiva</span>
+        </div>
+        <div class="toolbar-actions">
+            <select id="filter-select" onchange="filterLetters(this.value)" style="padding: 0.5rem 0.8rem; border-radius: 6px; font-weight: 600; font-size: 0.88rem; border: 1px solid rgba(255,255,255,0.4); background: white; color: #043d1a; cursor: pointer;">
+<option value="all">📑 Ver Todas las Cartas (11 Cursos)</option>
+                <option value="ELE0300742">ELE0300742 - ANÁLISIS DE SISTEMAS DE POTENCIA (28 est.)</option>
+                <option value="ELE0300739">ELE0300739 - SUBESTACIONES ELÉCTRICAS (21 est.)</option>
+                <option value="ELE0300837">ELE0300837 - ÉTICA PROFESIONAL (16 est.)</option>
+                <option value="ELE0300220">ELE0300220 - SIMULACIÓN TP (15 est.)</option>
+                <option value="ELE0300217">ELE0300217 - OPTATIVA PROFESIONAL I (15 est.)</option>
+                <option value="ELE0300116">ELE0300116 - ELECTIVA III-MATEMATICA FINANCIERA (15 est.)</option>
+                <option value="ELE0300747">ELE0300747 - OPTATIVA PROFESIONAL II (11 est.)</option>
+                <option value="ELE0300743">ELE0300743 - OPERACIONES Y MANTENIMIENTO II (10 est.)</option>
+                <option value="ELE0300730">ELE0300730 - SISTEMAS DE DISTRIBUCIÓN DE ENERGÍA (10 est.)</option>
+                <option value="ELE0300733">ELE0300733 - MÁQUINAS ELÉCTRICAS II TP (10 est.)</option>
+                <option value="ELE0300731">ELE0300731 - CIRCUITOS ELÉCTRICOS III (10 est.)</option>
+            </select>
+            <button onclick="window.print()" class="btn-action">
+                <i class="fa-solid fa-print"></i> Imprimir Selección (PDF)
+            </button>
+            <a href="cartas_solicitud/Cartas_Solicitud_Vacacionales_Consolidado.docx" class="btn-action btn-secondary" download>
+                <i class="fa-solid fa-file-word"></i> Descargar Todo en Word
+            </a>
+        </div>
+    </div>
+
+    <div class="sheets-container">
+
+        <!-- Hoja de Carta: ELE0300742 -->
+        <article class="page-sheet" data-code="ELE0300742">
+            <header class="header-top">
+                <div class="header-logo">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <div class="header-text">
+                        <h2>FUNDACIÓN ESCUELA TECNOLÓGICA DE NEIVA</h2>
+                        <p>"Jesús Oviedo Pérez" - FET | Programa de Ingeniería Eléctrica</p>
+                    </div>
+                </div>
+                <div class="header-meta">
+                    <p><strong>Neiva, Huila</strong></p>
+                    <p>Octubre de 2026</p>
+                    <span class="counter-badge">28 Estudiantes</span>
+                </div>
+            </header>
+
+            <section class="letter-recipient">
+                <p>Señor:</p>
+                <p class="title">ARQUITECTO MIGUEL ÁNGEL CANCHALA DELGADO</p>
+                <p class="cargo">Director del Programa de Ingeniería Eléctrica</p>
+                <p class="institution">Fundación Escuela Tecnológica de Neiva "Jesús Oviedo Pérez" - FET</p>
+                <p>Ciudad.</p>
+            </section>
+
+            <div class="letter-subject">
+                <strong>ASUNTO:</strong> Solicitud formal de apertura y programación de Curso Vacacional para la asignatura <strong>ANÁLISIS DE SISTEMAS DE POTENCIA</strong> (Código: <strong>ELE0300742</strong>, Semestre <strong>9°</strong>).
+            </div>
+
+            <div class="letter-body">
+                <p>Respetado Arquitecto Canchala:</p>
+                <p>
+                    Por medio de la presente, nosotros, los estudiantes abajo firmantes pertenecientes al programa de 
+                    <strong>Ingeniería Eléctrica</strong> de la Fundación Escuela Tecnológica de Neiva "Jesús Oviedo Pérez" (FET), nos dirigimos a usted 
+                    de manera cordial y respetuosa con el propósito de solicitar formalmente la apertura y oferta académica del 
+                    <strong>CURSO VACACIONAL</strong> para la siguiente asignatura de nuestro plan de estudios:
+                </p>
+
+                <div class="course-summary-box">
+                    <div class="item"><strong>Asignatura:</strong> ANÁLISIS DE SISTEMAS DE POTENCIA</div>
+                    <div class="item"><strong>Código Académico:</strong> ELE0300742</div>
+                    <div class="item"><strong>Semestre Académico:</strong> Semestre 9°</div>
+                    <div class="item"><strong>Estudiantes Preinscritos:</strong> 28 solicitantes</div>
+                </div>
+
+                <p>
+                    Esta petición responde a nuestra necesidad académica de avanzar y nivelar nuestro plan curricular, garantizando la continuidad en 
+                    nuestra formación profesional. Manifestamos nuestro firme compromiso de formalizar la matrícula correspondiente y asumir las responsabilidades 
+                    académicas y administrativas que determine la institución. Teniendo en cuenta que cumplimos a cabalidad con el requisito de demanda 
+                    con un grupo consolidado de <strong>28 estudiantes</strong>, solicitamos comedidamente su gestión ante la Coordinación Académica 
+                    para su aprobación, designación docente y respectiva programación de fechas y horarios.
+                </p>
+
+                <p style="margin-bottom: 0.3rem;"><strong>Relación de estudiantes solicitantes y firmas de respaldo:</strong></p>
+            </div>
+
+            <table class="students-table">
+                <thead>
+                    <tr>
+                        <th class="center" style="width: 38px;">N°</th>
+                        <th>Nombre Completo del Estudiante</th>
+                        <th class="center" style="width: 120px;">Cód. Estudiante</th>
+                        <th class="center" style="width: 110px;">Teléfono</th>
+                        <th class="center signature-cell">Firma</th>
+                    </tr>
+                </thead>
+                <tbody>
+    
+                    <tr data-student-code="ELE120251114">
+                        <td class="center"><strong>1</strong></td>
+                        <td>Joselito Medina Chindo</td>
+                        <td class="center">ELE120251114</td>
+                        <td class="center">3186082334</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE120251114', 'Joselito Medina Chindo')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE120251114">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELE1075241505">
+                        <td class="center"><strong>2</strong></td>
+                        <td>Géider René Bonilla Motta</td>
+                        <td class="center">ELE1075241505</td>
+                        <td class="center">3172171412</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE1075241505', 'Géider René Bonilla Motta')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE1075241505">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="72345178">
+                        <td class="center"><strong>3</strong></td>
+                        <td>Jhon Francisco Tasco Pérez</td>
+                        <td class="center">72345178</td>
+                        <td class="center">3246809834</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('72345178', 'Jhon Francisco Tasco Pérez')" title="Clic para firmar"><span class="sig-placeholder" data-code="72345178">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1006557999">
+                        <td class="center"><strong>4</strong></td>
+                        <td>Mariano Silva</td>
+                        <td class="center">1006557999</td>
+                        <td class="center">3157863943</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1006557999', 'Mariano Silva')" title="Clic para firmar"><span class="sig-placeholder" data-code="1006557999">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="10296571">
+                        <td class="center"><strong>5</strong></td>
+                        <td>Ivan Mauricio Aguirre</td>
+                        <td class="center">10296571</td>
+                        <td class="center">3176472761</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('10296571', 'Ivan Mauricio Aguirre')" title="Clic para firmar"><span class="sig-placeholder" data-code="10296571">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELE1-20251124">
+                        <td class="center"><strong>6</strong></td>
+                        <td>Ronald Mosquera</td>
+                        <td class="center">ELE1-20251124</td>
+                        <td class="center">3206368341</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE1-20251124', 'Ronald Mosquera')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE1-20251124">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="7696096">
+                        <td class="center"><strong>7</strong></td>
+                        <td>arangel tierradentro mosquera</td>
+                        <td class="center">7696096</td>
+                        <td class="center">3115400168</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('7696096', 'arangel tierradentro mosquera')" title="Clic para firmar"><span class="sig-placeholder" data-code="7696096">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELE120251027">
+                        <td class="center"><strong>8</strong></td>
+                        <td>Deiver Yesid Mantilla Vergara</td>
+                        <td class="center">ELE120251027</td>
+                        <td class="center">3125970130</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE120251027', 'Deiver Yesid Mantilla Vergara')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE120251027">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1075208119">
+                        <td class="center"><strong>9</strong></td>
+                        <td>Luis Quevedo</td>
+                        <td class="center">1075208119</td>
+                        <td class="center">3157056179</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1075208119', 'Luis Quevedo')" title="Clic para firmar"><span class="sig-placeholder" data-code="1075208119">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="0">
+                        <td class="center"><strong>10</strong></td>
+                        <td>Hector Enrique Marrugo Monterrosa</td>
+                        <td class="center">0</td>
+                        <td class="center">3013844718</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('0', 'Hector Enrique Marrugo Monterrosa')" title="Clic para firmar"><span class="sig-placeholder" data-code="0">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1081154403">
+                        <td class="center"><strong>11</strong></td>
+                        <td>Felipe Oliveros</td>
+                        <td class="center">1081154403</td>
+                        <td class="center">3108084096</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1081154403', 'Felipe Oliveros')" title="Clic para firmar"><span class="sig-placeholder" data-code="1081154403">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1061690977">
+                        <td class="center"><strong>12</strong></td>
+                        <td>Andrés Felipe Muñoz</td>
+                        <td class="center">1061690977</td>
+                        <td class="center">3108840329</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1061690977', 'Andrés Felipe Muñoz')" title="Clic para firmar"><span class="sig-placeholder" data-code="1061690977">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1075265343">
+                        <td class="center"><strong>13</strong></td>
+                        <td>Jorge Mario Carballo Galindo</td>
+                        <td class="center">1075265343</td>
+                        <td class="center">3167563385</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1075265343', 'Jorge Mario Carballo Galindo')" title="Clic para firmar"><span class="sig-placeholder" data-code="1075265343">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1061694993">
+                        <td class="center"><strong>14</strong></td>
+                        <td>Holman Diego Fernández Ramírez</td>
+                        <td class="center">1061694993</td>
+                        <td class="center">3012113817</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1061694993', 'Holman Diego Fernández Ramírez')" title="Clic para firmar"><span class="sig-placeholder" data-code="1061694993">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELE120212040">
+                        <td class="center"><strong>15</strong></td>
+                        <td>Michael Mauricio Rojas Plaza</td>
+                        <td class="center">ELE120212040</td>
+                        <td class="center">3123751445</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE120212040', 'Michael Mauricio Rojas Plaza')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE120212040">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELE202232">
+                        <td class="center"><strong>16</strong></td>
+                        <td>Farid jaramillo</td>
+                        <td class="center">ELE202232</td>
+                        <td class="center">3233843904</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE202232', 'Farid jaramillo')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE202232">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELE120212085">
+                        <td class="center"><strong>17</strong></td>
+                        <td>JULIAN ANDRES MARTINEZ VERGARA</td>
+                        <td class="center">ELE120212085</td>
+                        <td class="center">3102713176</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE120212085', 'JULIAN ANDRES MARTINEZ VERGARA')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE120212085">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1108937084">
+                        <td class="center"><strong>18</strong></td>
+                        <td>Ricardo Rodriguez</td>
+                        <td class="center">1108937084</td>
+                        <td class="center">3229849503</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1108937084', 'Ricardo Rodriguez')" title="Clic para firmar"><span class="sig-placeholder" data-code="1108937084">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1124862386">
+                        <td class="center"><strong>19</strong></td>
+                        <td>Astrid Carolina Becerra Cordoba</td>
+                        <td class="center">1124862386</td>
+                        <td class="center">3209437670</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1124862386', 'Astrid Carolina Becerra Cordoba')" title="Clic para firmar"><span class="sig-placeholder" data-code="1124862386">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="28733362">
+                        <td class="center"><strong>20</strong></td>
+                        <td>Gladys Hernández</td>
+                        <td class="center">28733362</td>
+                        <td class="center">3232935781</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('28733362', 'Gladys Hernández')" title="Clic para firmar"><span class="sig-placeholder" data-code="28733362">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1006003970">
+                        <td class="center"><strong>21</strong></td>
+                        <td>Hermes Morales</td>
+                        <td class="center">1006003970</td>
+                        <td class="center">3204731899</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1006003970', 'Hermes Morales')" title="Clic para firmar"><span class="sig-placeholder" data-code="1006003970">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELE120201039">
+                        <td class="center"><strong>22</strong></td>
+                        <td>solman rojas solarte</td>
+                        <td class="center">ELE120201039</td>
+                        <td class="center">3224823934</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE120201039', 'solman rojas solarte')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE120201039">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="83090551">
+                        <td class="center"><strong>23</strong></td>
+                        <td>JUAN ALEXANDER LUGO</td>
+                        <td class="center">83090551</td>
+                        <td class="center">3127103906</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('83090551', 'JUAN ALEXANDER LUGO')" title="Clic para firmar"><span class="sig-placeholder" data-code="83090551">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELEC1234">
+                        <td class="center"><strong>24</strong></td>
+                        <td>Danny Cruz</td>
+                        <td class="center">ELEC1234</td>
+                        <td class="center">3225295378</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELEC1234', 'Danny Cruz')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELEC1234">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="11309380">
+                        <td class="center"><strong>25</strong></td>
+                        <td>William Ramirez gutierrez</td>
+                        <td class="center">11309380</td>
+                        <td class="center">3108181836</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('11309380', 'William Ramirez gutierrez')" title="Clic para firmar"><span class="sig-placeholder" data-code="11309380">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1007163619">
+                        <td class="center"><strong>26</strong></td>
+                        <td>cristian david adamez ceballes</td>
+                        <td class="center">1007163619</td>
+                        <td class="center">3116307784</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1007163619', 'cristian david adamez ceballes')" title="Clic para firmar"><span class="sig-placeholder" data-code="1007163619">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1077866338">
+                        <td class="center"><strong>27</strong></td>
+                        <td>Karen viviana Gaona Vargas</td>
+                        <td class="center">1077866338</td>
+                        <td class="center">3202555302</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1077866338', 'Karen viviana Gaona Vargas')" title="Clic para firmar"><span class="sig-placeholder" data-code="1077866338">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELE0120242022">
+                        <td class="center"><strong>28</strong></td>
+                        <td>Alvaro Andrés González albañil</td>
+                        <td class="center">ELE0120242022</td>
+                        <td class="center">3176543168</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE0120242022', 'Alvaro Andrés González albañil')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE0120242022">___________________</span></td>
+                    </tr>
+        
+                </tbody>
+            </table>
+
+            <footer class="letter-footer">
+                <p>Agradecemos de antemano su amable atención, receptividad y pronta gestión favorable a esta solicitud.</p>
+                <div class="sign-placeholder">
+                    REPRESENTACIÓN ESTUDIANTIL - INGENIERÍA ELÉCTRICA<br>
+                    Fundación Escuela Tecnológica de Neiva - FET
+                </div>
+            </footer>
+        </article>
+    
+        <!-- Hoja de Carta: ELE0300739 -->
+        <article class="page-sheet" data-code="ELE0300739">
+            <header class="header-top">
+                <div class="header-logo">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <div class="header-text">
+                        <h2>FUNDACIÓN ESCUELA TECNOLÓGICA DE NEIVA</h2>
+                        <p>"Jesús Oviedo Pérez" - FET | Programa de Ingeniería Eléctrica</p>
+                    </div>
+                </div>
+                <div class="header-meta">
+                    <p><strong>Neiva, Huila</strong></p>
+                    <p>Octubre de 2026</p>
+                    <span class="counter-badge">21 Estudiantes</span>
+                </div>
+            </header>
+
+            <section class="letter-recipient">
+                <p>Señor:</p>
+                <p class="title">ARQUITECTO MIGUEL ÁNGEL CANCHALA DELGADO</p>
+                <p class="cargo">Director del Programa de Ingeniería Eléctrica</p>
+                <p class="institution">Fundación Escuela Tecnológica de Neiva "Jesús Oviedo Pérez" - FET</p>
+                <p>Ciudad.</p>
+            </section>
+
+            <div class="letter-subject">
+                <strong>ASUNTO:</strong> Solicitud formal de apertura y programación de Curso Vacacional para la asignatura <strong>SUBESTACIONES ELÉCTRICAS</strong> (Código: <strong>ELE0300739</strong>, Semestre <strong>8°</strong>).
+            </div>
+
+            <div class="letter-body">
+                <p>Respetado Arquitecto Canchala:</p>
+                <p>
+                    Por medio de la presente, nosotros, los estudiantes abajo firmantes pertenecientes al programa de 
+                    <strong>Ingeniería Eléctrica</strong> de la Fundación Escuela Tecnológica de Neiva "Jesús Oviedo Pérez" (FET), nos dirigimos a usted 
+                    de manera cordial y respetuosa con el propósito de solicitar formalmente la apertura y oferta académica del 
+                    <strong>CURSO VACACIONAL</strong> para la siguiente asignatura de nuestro plan de estudios:
+                </p>
+
+                <div class="course-summary-box">
+                    <div class="item"><strong>Asignatura:</strong> SUBESTACIONES ELÉCTRICAS</div>
+                    <div class="item"><strong>Código Académico:</strong> ELE0300739</div>
+                    <div class="item"><strong>Semestre Académico:</strong> Semestre 8°</div>
+                    <div class="item"><strong>Estudiantes Preinscritos:</strong> 21 solicitantes</div>
+                </div>
+
+                <p>
+                    Esta petición responde a nuestra necesidad académica de avanzar y nivelar nuestro plan curricular, garantizando la continuidad en 
+                    nuestra formación profesional. Manifestamos nuestro firme compromiso de formalizar la matrícula correspondiente y asumir las responsabilidades 
+                    académicas y administrativas que determine la institución. Teniendo en cuenta que cumplimos a cabalidad con el requisito de demanda 
+                    con un grupo consolidado de <strong>21 estudiantes</strong>, solicitamos comedidamente su gestión ante la Coordinación Académica 
+                    para su aprobación, designación docente y respectiva programación de fechas y horarios.
+                </p>
+
+                <p style="margin-bottom: 0.3rem;"><strong>Relación de estudiantes solicitantes y firmas de respaldo:</strong></p>
+            </div>
+
+            <table class="students-table">
+                <thead>
+                    <tr>
+                        <th class="center" style="width: 38px;">N°</th>
+                        <th>Nombre Completo del Estudiante</th>
+                        <th class="center" style="width: 120px;">Cód. Estudiante</th>
+                        <th class="center" style="width: 110px;">Teléfono</th>
+                        <th class="center signature-cell">Firma</th>
+                    </tr>
+                </thead>
+                <tbody>
+    
+                    <tr data-student-code="ELE120251114">
+                        <td class="center"><strong>1</strong></td>
+                        <td>Joselito Medina Chindo</td>
+                        <td class="center">ELE120251114</td>
+                        <td class="center">3186082334</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE120251114', 'Joselito Medina Chindo')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE120251114">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELE1075241505">
+                        <td class="center"><strong>2</strong></td>
+                        <td>Géider René Bonilla Motta</td>
+                        <td class="center">ELE1075241505</td>
+                        <td class="center">3172171412</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE1075241505', 'Géider René Bonilla Motta')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE1075241505">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="72345178">
+                        <td class="center"><strong>3</strong></td>
+                        <td>Jhon Francisco Tasco Pérez</td>
+                        <td class="center">72345178</td>
+                        <td class="center">3246809834</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('72345178', 'Jhon Francisco Tasco Pérez')" title="Clic para firmar"><span class="sig-placeholder" data-code="72345178">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1006557999">
+                        <td class="center"><strong>4</strong></td>
+                        <td>Mariano Silva</td>
+                        <td class="center">1006557999</td>
+                        <td class="center">3157863943</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1006557999', 'Mariano Silva')" title="Clic para firmar"><span class="sig-placeholder" data-code="1006557999">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1075319089">
+                        <td class="center"><strong>5</strong></td>
+                        <td>Jhoan Sebastián Henao Moreno</td>
+                        <td class="center">1075319089</td>
+                        <td class="center">3112670775</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1075319089', 'Jhoan Sebastián Henao Moreno')" title="Clic para firmar"><span class="sig-placeholder" data-code="1075319089">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="7722839">
+                        <td class="center"><strong>6</strong></td>
+                        <td>Pablo andres aviles</td>
+                        <td class="center">7722839</td>
+                        <td class="center">3114617577</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('7722839', 'Pablo andres aviles')" title="Clic para firmar"><span class="sig-placeholder" data-code="7722839">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="7696096">
+                        <td class="center"><strong>7</strong></td>
+                        <td>arangel tierradentro mosquera</td>
+                        <td class="center">7696096</td>
+                        <td class="center">3115400168</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('7696096', 'arangel tierradentro mosquera')" title="Clic para firmar"><span class="sig-placeholder" data-code="7696096">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1061814979">
+                        <td class="center"><strong>8</strong></td>
+                        <td>Edward Andrés Cerón Llantén</td>
+                        <td class="center">1061814979</td>
+                        <td class="center">3105179946</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1061814979', 'Edward Andrés Cerón Llantén')" title="Clic para firmar"><span class="sig-placeholder" data-code="1061814979">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1061690977">
+                        <td class="center"><strong>9</strong></td>
+                        <td>Andrés Felipe Muñoz</td>
+                        <td class="center">1061690977</td>
+                        <td class="center">3108840329</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1061690977', 'Andrés Felipe Muñoz')" title="Clic para firmar"><span class="sig-placeholder" data-code="1061690977">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1061694993">
+                        <td class="center"><strong>10</strong></td>
+                        <td>Holman Diego Fernández Ramírez</td>
+                        <td class="center">1061694993</td>
+                        <td class="center">3012113817</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1061694993', 'Holman Diego Fernández Ramírez')" title="Clic para firmar"><span class="sig-placeholder" data-code="1061694993">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELE120212040">
+                        <td class="center"><strong>11</strong></td>
+                        <td>Michael Mauricio Rojas Plaza</td>
+                        <td class="center">ELE120212040</td>
+                        <td class="center">3123751445</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE120212040', 'Michael Mauricio Rojas Plaza')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE120212040">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1019072230">
+                        <td class="center"><strong>12</strong></td>
+                        <td>juan camilo murillo moreno</td>
+                        <td class="center">1019072230</td>
+                        <td class="center">3106013444</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1019072230', 'juan camilo murillo moreno')" title="Clic para firmar"><span class="sig-placeholder" data-code="1019072230">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1108937084">
+                        <td class="center"><strong>13</strong></td>
+                        <td>Ricardo Rodriguez</td>
+                        <td class="center">1108937084</td>
+                        <td class="center">3229849503</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1108937084', 'Ricardo Rodriguez')" title="Clic para firmar"><span class="sig-placeholder" data-code="1108937084">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="28733362">
+                        <td class="center"><strong>14</strong></td>
+                        <td>Gladys Hernández</td>
+                        <td class="center">28733362</td>
+                        <td class="center">3232935781</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('28733362', 'Gladys Hernández')" title="Clic para firmar"><span class="sig-placeholder" data-code="28733362">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1006003970">
+                        <td class="center"><strong>15</strong></td>
+                        <td>Hermes Morales</td>
+                        <td class="center">1006003970</td>
+                        <td class="center">3204731899</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1006003970', 'Hermes Morales')" title="Clic para firmar"><span class="sig-placeholder" data-code="1006003970">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="83090551">
+                        <td class="center"><strong>16</strong></td>
+                        <td>JUAN ALEXANDER LUGO</td>
+                        <td class="center">83090551</td>
+                        <td class="center">3127103906</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('83090551', 'JUAN ALEXANDER LUGO')" title="Clic para firmar"><span class="sig-placeholder" data-code="83090551">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELEC1234">
+                        <td class="center"><strong>17</strong></td>
+                        <td>Danny Cruz</td>
+                        <td class="center">ELEC1234</td>
+                        <td class="center">3225295378</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELEC1234', 'Danny Cruz')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELEC1234">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="11309380">
+                        <td class="center"><strong>18</strong></td>
+                        <td>William Ramirez gutierrez</td>
+                        <td class="center">11309380</td>
+                        <td class="center">3108181836</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('11309380', 'William Ramirez gutierrez')" title="Clic para firmar"><span class="sig-placeholder" data-code="11309380">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1007163619">
+                        <td class="center"><strong>19</strong></td>
+                        <td>cristian david adamez ceballes</td>
+                        <td class="center">1007163619</td>
+                        <td class="center">3116307784</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1007163619', 'cristian david adamez ceballes')" title="Clic para firmar"><span class="sig-placeholder" data-code="1007163619">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1077866338">
+                        <td class="center"><strong>20</strong></td>
+                        <td>Karen viviana Gaona Vargas</td>
+                        <td class="center">1077866338</td>
+                        <td class="center">3202555302</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1077866338', 'Karen viviana Gaona Vargas')" title="Clic para firmar"><span class="sig-placeholder" data-code="1077866338">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELE0120242022">
+                        <td class="center"><strong>21</strong></td>
+                        <td>Alvaro Andrés González albañil</td>
+                        <td class="center">ELE0120242022</td>
+                        <td class="center">3176543168</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE0120242022', 'Alvaro Andrés González albañil')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE0120242022">___________________</span></td>
+                    </tr>
+        
+                </tbody>
+            </table>
+
+            <footer class="letter-footer">
+                <p>Agradecemos de antemano su amable atención, receptividad y pronta gestión favorable a esta solicitud.</p>
+                <div class="sign-placeholder">
+                    REPRESENTACIÓN ESTUDIANTIL - INGENIERÍA ELÉCTRICA<br>
+                    Fundación Escuela Tecnológica de Neiva - FET
+                </div>
+            </footer>
+        </article>
+    
+        <!-- Hoja de Carta: ELE0300837 -->
+        <article class="page-sheet" data-code="ELE0300837">
+            <header class="header-top">
+                <div class="header-logo">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <div class="header-text">
+                        <h2>FUNDACIÓN ESCUELA TECNOLÓGICA DE NEIVA</h2>
+                        <p>"Jesús Oviedo Pérez" - FET | Programa de Ingeniería Eléctrica</p>
+                    </div>
+                </div>
+                <div class="header-meta">
+                    <p><strong>Neiva, Huila</strong></p>
+                    <p>Octubre de 2026</p>
+                    <span class="counter-badge">16 Estudiantes</span>
+                </div>
+            </header>
+
+            <section class="letter-recipient">
+                <p>Señor:</p>
+                <p class="title">ARQUITECTO MIGUEL ÁNGEL CANCHALA DELGADO</p>
+                <p class="cargo">Director del Programa de Ingeniería Eléctrica</p>
+                <p class="institution">Fundación Escuela Tecnológica de Neiva "Jesús Oviedo Pérez" - FET</p>
+                <p>Ciudad.</p>
+            </section>
+
+            <div class="letter-subject">
+                <strong>ASUNTO:</strong> Solicitud formal de apertura y programación de Curso Vacacional para la asignatura <strong>ÉTICA PROFESIONAL</strong> (Código: <strong>ELE0300837</strong>, Semestre <strong>9°</strong>).
+            </div>
+
+            <div class="letter-body">
+                <p>Respetado Arquitecto Canchala:</p>
+                <p>
+                    Por medio de la presente, nosotros, los estudiantes abajo firmantes pertenecientes al programa de 
+                    <strong>Ingeniería Eléctrica</strong> de la Fundación Escuela Tecnológica de Neiva "Jesús Oviedo Pérez" (FET), nos dirigimos a usted 
+                    de manera cordial y respetuosa con el propósito de solicitar formalmente la apertura y oferta académica del 
+                    <strong>CURSO VACACIONAL</strong> para la siguiente asignatura de nuestro plan de estudios:
+                </p>
+
+                <div class="course-summary-box">
+                    <div class="item"><strong>Asignatura:</strong> ÉTICA PROFESIONAL</div>
+                    <div class="item"><strong>Código Académico:</strong> ELE0300837</div>
+                    <div class="item"><strong>Semestre Académico:</strong> Semestre 9°</div>
+                    <div class="item"><strong>Estudiantes Preinscritos:</strong> 16 solicitantes</div>
+                </div>
+
+                <p>
+                    Esta petición responde a nuestra necesidad académica de avanzar y nivelar nuestro plan curricular, garantizando la continuidad en 
+                    nuestra formación profesional. Manifestamos nuestro firme compromiso de formalizar la matrícula correspondiente y asumir las responsabilidades 
+                    académicas y administrativas que determine la institución. Teniendo en cuenta que cumplimos a cabalidad con el requisito de demanda 
+                    con un grupo consolidado de <strong>16 estudiantes</strong>, solicitamos comedidamente su gestión ante la Coordinación Académica 
+                    para su aprobación, designación docente y respectiva programación de fechas y horarios.
+                </p>
+
+                <p style="margin-bottom: 0.3rem;"><strong>Relación de estudiantes solicitantes y firmas de respaldo:</strong></p>
+            </div>
+
+            <table class="students-table">
+                <thead>
+                    <tr>
+                        <th class="center" style="width: 38px;">N°</th>
+                        <th>Nombre Completo del Estudiante</th>
+                        <th class="center" style="width: 120px;">Cód. Estudiante</th>
+                        <th class="center" style="width: 110px;">Teléfono</th>
+                        <th class="center signature-cell">Firma</th>
+                    </tr>
+                </thead>
+                <tbody>
+    
+                    <tr data-student-code="ELE220251011">
+                        <td class="center"><strong>1</strong></td>
+                        <td>Mauricio Armando Muñoz Gómez</td>
+                        <td class="center">ELE220251011</td>
+                        <td class="center">3137103823</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE220251011', 'Mauricio Armando Muñoz Gómez')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE220251011">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1075224876">
+                        <td class="center"><strong>2</strong></td>
+                        <td>Charlie jars Cardozo urrego</td>
+                        <td class="center">1075224876</td>
+                        <td class="center">3209454733</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1075224876', 'Charlie jars Cardozo urrego')" title="Clic para firmar"><span class="sig-placeholder" data-code="1075224876">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1006557999">
+                        <td class="center"><strong>3</strong></td>
+                        <td>Mariano Silva</td>
+                        <td class="center">1006557999</td>
+                        <td class="center">3157863943</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1006557999', 'Mariano Silva')" title="Clic para firmar"><span class="sig-placeholder" data-code="1006557999">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELE120211079">
+                        <td class="center"><strong>4</strong></td>
+                        <td>Cristian Silva</td>
+                        <td class="center">ELE120211079</td>
+                        <td class="center">3188694094</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE120211079', 'Cristian Silva')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE120211079">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="7696096">
+                        <td class="center"><strong>5</strong></td>
+                        <td>arangel tierradentro mosquera</td>
+                        <td class="center">7696096</td>
+                        <td class="center">3115400168</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('7696096', 'arangel tierradentro mosquera')" title="Clic para firmar"><span class="sig-placeholder" data-code="7696096">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1075208119">
+                        <td class="center"><strong>6</strong></td>
+                        <td>Luis Quevedo</td>
+                        <td class="center">1075208119</td>
+                        <td class="center">3157056179</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1075208119', 'Luis Quevedo')" title="Clic para firmar"><span class="sig-placeholder" data-code="1075208119">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1081154403">
+                        <td class="center"><strong>7</strong></td>
+                        <td>Felipe Oliveros</td>
+                        <td class="center">1081154403</td>
+                        <td class="center">3108084096</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1081154403', 'Felipe Oliveros')" title="Clic para firmar"><span class="sig-placeholder" data-code="1081154403">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="80128546">
+                        <td class="center"><strong>8</strong></td>
+                        <td>Hamilton Giraldo B</td>
+                        <td class="center">80128546</td>
+                        <td class="center">3158954262</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('80128546', 'Hamilton Giraldo B')" title="Clic para firmar"><span class="sig-placeholder" data-code="80128546">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="7722019">
+                        <td class="center"><strong>9</strong></td>
+                        <td>Johan Javier Oñate Núñez</td>
+                        <td class="center">7722019</td>
+                        <td class="center">3204961847</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('7722019', 'Johan Javier Oñate Núñez')" title="Clic para firmar"><span class="sig-placeholder" data-code="7722019">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELE202232">
+                        <td class="center"><strong>10</strong></td>
+                        <td>Farid jaramillo</td>
+                        <td class="center">ELE202232</td>
+                        <td class="center">3233843904</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE202232', 'Farid jaramillo')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE202232">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1108937084">
+                        <td class="center"><strong>11</strong></td>
+                        <td>Ricardo Rodriguez</td>
+                        <td class="center">1108937084</td>
+                        <td class="center">3229849503</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1108937084', 'Ricardo Rodriguez')" title="Clic para firmar"><span class="sig-placeholder" data-code="1108937084">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1006003970">
+                        <td class="center"><strong>12</strong></td>
+                        <td>Hermes Morales</td>
+                        <td class="center">1006003970</td>
+                        <td class="center">3204731899</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1006003970', 'Hermes Morales')" title="Clic para firmar"><span class="sig-placeholder" data-code="1006003970">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELE120201039">
+                        <td class="center"><strong>13</strong></td>
+                        <td>solman rojas solarte</td>
+                        <td class="center">ELE120201039</td>
+                        <td class="center">3224823934</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE120201039', 'solman rojas solarte')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE120201039">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="83090551">
+                        <td class="center"><strong>14</strong></td>
+                        <td>JUAN ALEXANDER LUGO</td>
+                        <td class="center">83090551</td>
+                        <td class="center">3127103906</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('83090551', 'JUAN ALEXANDER LUGO')" title="Clic para firmar"><span class="sig-placeholder" data-code="83090551">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1007163619">
+                        <td class="center"><strong>15</strong></td>
+                        <td>cristian david adamez ceballes</td>
+                        <td class="center">1007163619</td>
+                        <td class="center">3116307784</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1007163619', 'cristian david adamez ceballes')" title="Clic para firmar"><span class="sig-placeholder" data-code="1007163619">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELE0120242022">
+                        <td class="center"><strong>16</strong></td>
+                        <td>Alvaro Andrés González albañil</td>
+                        <td class="center">ELE0120242022</td>
+                        <td class="center">3176543168</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE0120242022', 'Alvaro Andrés González albañil')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE0120242022">___________________</span></td>
+                    </tr>
+        
+                </tbody>
+            </table>
+
+            <footer class="letter-footer">
+                <p>Agradecemos de antemano su amable atención, receptividad y pronta gestión favorable a esta solicitud.</p>
+                <div class="sign-placeholder">
+                    REPRESENTACIÓN ESTUDIANTIL - INGENIERÍA ELÉCTRICA<br>
+                    Fundación Escuela Tecnológica de Neiva - FET
+                </div>
+            </footer>
+        </article>
+    
+        <!-- Hoja de Carta: ELE0300220 -->
+        <article class="page-sheet" data-code="ELE0300220">
+            <header class="header-top">
+                <div class="header-logo">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <div class="header-text">
+                        <h2>FUNDACIÓN ESCUELA TECNOLÓGICA DE NEIVA</h2>
+                        <p>"Jesús Oviedo Pérez" - FET | Programa de Ingeniería Eléctrica</p>
+                    </div>
+                </div>
+                <div class="header-meta">
+                    <p><strong>Neiva, Huila</strong></p>
+                    <p>Octubre de 2026</p>
+                    <span class="counter-badge">15 Estudiantes</span>
+                </div>
+            </header>
+
+            <section class="letter-recipient">
+                <p>Señor:</p>
+                <p class="title">ARQUITECTO MIGUEL ÁNGEL CANCHALA DELGADO</p>
+                <p class="cargo">Director del Programa de Ingeniería Eléctrica</p>
+                <p class="institution">Fundación Escuela Tecnológica de Neiva "Jesús Oviedo Pérez" - FET</p>
+                <p>Ciudad.</p>
+            </section>
+
+            <div class="letter-subject">
+                <strong>ASUNTO:</strong> Solicitud formal de apertura y programación de Curso Vacacional para la asignatura <strong>SIMULACIÓN TP</strong> (Código: <strong>ELE0300220</strong>, Semestre <strong>8°</strong>).
+            </div>
+
+            <div class="letter-body">
+                <p>Respetado Arquitecto Canchala:</p>
+                <p>
+                    Por medio de la presente, nosotros, los estudiantes abajo firmantes pertenecientes al programa de 
+                    <strong>Ingeniería Eléctrica</strong> de la Fundación Escuela Tecnológica de Neiva "Jesús Oviedo Pérez" (FET), nos dirigimos a usted 
+                    de manera cordial y respetuosa con el propósito de solicitar formalmente la apertura y oferta académica del 
+                    <strong>CURSO VACACIONAL</strong> para la siguiente asignatura de nuestro plan de estudios:
+                </p>
+
+                <div class="course-summary-box">
+                    <div class="item"><strong>Asignatura:</strong> SIMULACIÓN TP</div>
+                    <div class="item"><strong>Código Académico:</strong> ELE0300220</div>
+                    <div class="item"><strong>Semestre Académico:</strong> Semestre 8°</div>
+                    <div class="item"><strong>Estudiantes Preinscritos:</strong> 15 solicitantes</div>
+                </div>
+
+                <p>
+                    Esta petición responde a nuestra necesidad académica de avanzar y nivelar nuestro plan curricular, garantizando la continuidad en 
+                    nuestra formación profesional. Manifestamos nuestro firme compromiso de formalizar la matrícula correspondiente y asumir las responsabilidades 
+                    académicas y administrativas que determine la institución. Teniendo en cuenta que cumplimos a cabalidad con el requisito de demanda 
+                    con un grupo consolidado de <strong>15 estudiantes</strong>, solicitamos comedidamente su gestión ante la Coordinación Académica 
+                    para su aprobación, designación docente y respectiva programación de fechas y horarios.
+                </p>
+
+                <p style="margin-bottom: 0.3rem;"><strong>Relación de estudiantes solicitantes y firmas de respaldo:</strong></p>
+            </div>
+
+            <table class="students-table">
+                <thead>
+                    <tr>
+                        <th class="center" style="width: 38px;">N°</th>
+                        <th>Nombre Completo del Estudiante</th>
+                        <th class="center" style="width: 120px;">Cód. Estudiante</th>
+                        <th class="center" style="width: 110px;">Teléfono</th>
+                        <th class="center signature-cell">Firma</th>
+                    </tr>
+                </thead>
+                <tbody>
+    
+                    <tr data-student-code="7697417">
+                        <td class="center"><strong>1</strong></td>
+                        <td>Carmelo  Sanjuanés</td>
+                        <td class="center">7697417</td>
+                        <td class="center">3229497574</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('7697417', 'Carmelo  Sanjuanés')" title="Clic para firmar"><span class="sig-placeholder" data-code="7697417">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="72345178">
+                        <td class="center"><strong>2</strong></td>
+                        <td>Jhon Francisco Tasco Pérez</td>
+                        <td class="center">72345178</td>
+                        <td class="center">3246809834</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('72345178', 'Jhon Francisco Tasco Pérez')" title="Clic para firmar"><span class="sig-placeholder" data-code="72345178">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1006557999">
+                        <td class="center"><strong>3</strong></td>
+                        <td>Mariano Silva</td>
+                        <td class="center">1006557999</td>
+                        <td class="center">3157863943</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1006557999', 'Mariano Silva')" title="Clic para firmar"><span class="sig-placeholder" data-code="1006557999">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1075319089">
+                        <td class="center"><strong>4</strong></td>
+                        <td>Jhoan Sebastián Henao Moreno</td>
+                        <td class="center">1075319089</td>
+                        <td class="center">3112670775</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1075319089', 'Jhoan Sebastián Henao Moreno')" title="Clic para firmar"><span class="sig-placeholder" data-code="1075319089">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="7722839">
+                        <td class="center"><strong>5</strong></td>
+                        <td>Pablo andres aviles</td>
+                        <td class="center">7722839</td>
+                        <td class="center">3114617577</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('7722839', 'Pablo andres aviles')" title="Clic para firmar"><span class="sig-placeholder" data-code="7722839">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELE120251027">
+                        <td class="center"><strong>6</strong></td>
+                        <td>Deiver Yesid Mantilla Vergara</td>
+                        <td class="center">ELE120251027</td>
+                        <td class="center">3125970130</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE120251027', 'Deiver Yesid Mantilla Vergara')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE120251027">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1061694993">
+                        <td class="center"><strong>7</strong></td>
+                        <td>Holman Diego Fernández Ramírez</td>
+                        <td class="center">1061694993</td>
+                        <td class="center">3012113817</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1061694993', 'Holman Diego Fernández Ramírez')" title="Clic para firmar"><span class="sig-placeholder" data-code="1061694993">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELE120212040">
+                        <td class="center"><strong>8</strong></td>
+                        <td>Michael Mauricio Rojas Plaza</td>
+                        <td class="center">ELE120212040</td>
+                        <td class="center">3123751445</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE120212040', 'Michael Mauricio Rojas Plaza')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE120212040">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1108937084">
+                        <td class="center"><strong>9</strong></td>
+                        <td>Ricardo Rodriguez</td>
+                        <td class="center">1108937084</td>
+                        <td class="center">3229849503</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1108937084', 'Ricardo Rodriguez')" title="Clic para firmar"><span class="sig-placeholder" data-code="1108937084">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1061698805">
+                        <td class="center"><strong>10</strong></td>
+                        <td>Felipe Fernandez</td>
+                        <td class="center">1061698805</td>
+                        <td class="center">3026481651</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1061698805', 'Felipe Fernandez')" title="Clic para firmar"><span class="sig-placeholder" data-code="1061698805">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="28733362">
+                        <td class="center"><strong>11</strong></td>
+                        <td>Gladys Hernández</td>
+                        <td class="center">28733362</td>
+                        <td class="center">3232935781</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('28733362', 'Gladys Hernández')" title="Clic para firmar"><span class="sig-placeholder" data-code="28733362">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1006003970">
+                        <td class="center"><strong>12</strong></td>
+                        <td>Hermes Morales</td>
+                        <td class="center">1006003970</td>
+                        <td class="center">3204731899</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1006003970', 'Hermes Morales')" title="Clic para firmar"><span class="sig-placeholder" data-code="1006003970">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="83090551">
+                        <td class="center"><strong>13</strong></td>
+                        <td>JUAN ALEXANDER LUGO</td>
+                        <td class="center">83090551</td>
+                        <td class="center">3127103906</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('83090551', 'JUAN ALEXANDER LUGO')" title="Clic para firmar"><span class="sig-placeholder" data-code="83090551">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1007163619">
+                        <td class="center"><strong>14</strong></td>
+                        <td>cristian david adamez ceballes</td>
+                        <td class="center">1007163619</td>
+                        <td class="center">3116307784</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1007163619', 'cristian david adamez ceballes')" title="Clic para firmar"><span class="sig-placeholder" data-code="1007163619">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1077866338">
+                        <td class="center"><strong>15</strong></td>
+                        <td>Karen viviana Gaona Vargas</td>
+                        <td class="center">1077866338</td>
+                        <td class="center">3202555302</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1077866338', 'Karen viviana Gaona Vargas')" title="Clic para firmar"><span class="sig-placeholder" data-code="1077866338">___________________</span></td>
+                    </tr>
+        
+                </tbody>
+            </table>
+
+            <footer class="letter-footer">
+                <p>Agradecemos de antemano su amable atención, receptividad y pronta gestión favorable a esta solicitud.</p>
+                <div class="sign-placeholder">
+                    REPRESENTACIÓN ESTUDIANTIL - INGENIERÍA ELÉCTRICA<br>
+                    Fundación Escuela Tecnológica de Neiva - FET
+                </div>
+            </footer>
+        </article>
+    
+        <!-- Hoja de Carta: ELE0300217 -->
+        <article class="page-sheet" data-code="ELE0300217">
+            <header class="header-top">
+                <div class="header-logo">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <div class="header-text">
+                        <h2>FUNDACIÓN ESCUELA TECNOLÓGICA DE NEIVA</h2>
+                        <p>"Jesús Oviedo Pérez" - FET | Programa de Ingeniería Eléctrica</p>
+                    </div>
+                </div>
+                <div class="header-meta">
+                    <p><strong>Neiva, Huila</strong></p>
+                    <p>Octubre de 2026</p>
+                    <span class="counter-badge">15 Estudiantes</span>
+                </div>
+            </header>
+
+            <section class="letter-recipient">
+                <p>Señor:</p>
+                <p class="title">ARQUITECTO MIGUEL ÁNGEL CANCHALA DELGADO</p>
+                <p class="cargo">Director del Programa de Ingeniería Eléctrica</p>
+                <p class="institution">Fundación Escuela Tecnológica de Neiva "Jesús Oviedo Pérez" - FET</p>
+                <p>Ciudad.</p>
+            </section>
+
+            <div class="letter-subject">
+                <strong>ASUNTO:</strong> Solicitud formal de apertura y programación de Curso Vacacional para la asignatura <strong>OPTATIVA PROFESIONAL I</strong> (Código: <strong>ELE0300217</strong>, Semestre <strong>8°</strong>).
+            </div>
+
+            <div class="letter-body">
+                <p>Respetado Arquitecto Canchala:</p>
+                <p>
+                    Por medio de la presente, nosotros, los estudiantes abajo firmantes pertenecientes al programa de 
+                    <strong>Ingeniería Eléctrica</strong> de la Fundación Escuela Tecnológica de Neiva "Jesús Oviedo Pérez" (FET), nos dirigimos a usted 
+                    de manera cordial y respetuosa con el propósito de solicitar formalmente la apertura y oferta académica del 
+                    <strong>CURSO VACACIONAL</strong> para la siguiente asignatura de nuestro plan de estudios:
+                </p>
+
+                <div class="course-summary-box">
+                    <div class="item"><strong>Asignatura:</strong> OPTATIVA PROFESIONAL I</div>
+                    <div class="item"><strong>Código Académico:</strong> ELE0300217</div>
+                    <div class="item"><strong>Semestre Académico:</strong> Semestre 8°</div>
+                    <div class="item"><strong>Estudiantes Preinscritos:</strong> 15 solicitantes</div>
+                </div>
+
+                <p>
+                    Esta petición responde a nuestra necesidad académica de avanzar y nivelar nuestro plan curricular, garantizando la continuidad en 
+                    nuestra formación profesional. Manifestamos nuestro firme compromiso de formalizar la matrícula correspondiente y asumir las responsabilidades 
+                    académicas y administrativas que determine la institución. Teniendo en cuenta que cumplimos a cabalidad con el requisito de demanda 
+                    con un grupo consolidado de <strong>15 estudiantes</strong>, solicitamos comedidamente su gestión ante la Coordinación Académica 
+                    para su aprobación, designación docente y respectiva programación de fechas y horarios.
+                </p>
+
+                <p style="margin-bottom: 0.3rem;"><strong>Relación de estudiantes solicitantes y firmas de respaldo:</strong></p>
+            </div>
+
+            <table class="students-table">
+                <thead>
+                    <tr>
+                        <th class="center" style="width: 38px;">N°</th>
+                        <th>Nombre Completo del Estudiante</th>
+                        <th class="center" style="width: 120px;">Cód. Estudiante</th>
+                        <th class="center" style="width: 110px;">Teléfono</th>
+                        <th class="center signature-cell">Firma</th>
+                    </tr>
+                </thead>
+                <tbody>
+    
+                    <tr data-student-code="ELE120251114">
+                        <td class="center"><strong>1</strong></td>
+                        <td>Joselito Medina Chindo</td>
+                        <td class="center">ELE120251114</td>
+                        <td class="center">3186082334</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE120251114', 'Joselito Medina Chindo')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE120251114">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELE1075241505">
+                        <td class="center"><strong>2</strong></td>
+                        <td>Géider René Bonilla Motta</td>
+                        <td class="center">ELE1075241505</td>
+                        <td class="center">3172171412</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE1075241505', 'Géider René Bonilla Motta')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE1075241505">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="72345178">
+                        <td class="center"><strong>3</strong></td>
+                        <td>Jhon Francisco Tasco Pérez</td>
+                        <td class="center">72345178</td>
+                        <td class="center">3246809834</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('72345178', 'Jhon Francisco Tasco Pérez')" title="Clic para firmar"><span class="sig-placeholder" data-code="72345178">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1075224876">
+                        <td class="center"><strong>4</strong></td>
+                        <td>Charlie jars Cardozo urrego</td>
+                        <td class="center">1075224876</td>
+                        <td class="center">3209454733</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1075224876', 'Charlie jars Cardozo urrego')" title="Clic para firmar"><span class="sig-placeholder" data-code="1075224876">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1006557999">
+                        <td class="center"><strong>5</strong></td>
+                        <td>Mariano Silva</td>
+                        <td class="center">1006557999</td>
+                        <td class="center">3157863943</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1006557999', 'Mariano Silva')" title="Clic para firmar"><span class="sig-placeholder" data-code="1006557999">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1075319089">
+                        <td class="center"><strong>6</strong></td>
+                        <td>Jhoan Sebastián Henao Moreno</td>
+                        <td class="center">1075319089</td>
+                        <td class="center">3112670775</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1075319089', 'Jhoan Sebastián Henao Moreno')" title="Clic para firmar"><span class="sig-placeholder" data-code="1075319089">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="7722839">
+                        <td class="center"><strong>7</strong></td>
+                        <td>Pablo andres aviles</td>
+                        <td class="center">7722839</td>
+                        <td class="center">3114617577</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('7722839', 'Pablo andres aviles')" title="Clic para firmar"><span class="sig-placeholder" data-code="7722839">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1061690977">
+                        <td class="center"><strong>8</strong></td>
+                        <td>Andrés Felipe Muñoz</td>
+                        <td class="center">1061690977</td>
+                        <td class="center">3108840329</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1061690977', 'Andrés Felipe Muñoz')" title="Clic para firmar"><span class="sig-placeholder" data-code="1061690977">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1108937084">
+                        <td class="center"><strong>9</strong></td>
+                        <td>Ricardo Rodriguez</td>
+                        <td class="center">1108937084</td>
+                        <td class="center">3229849503</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1108937084', 'Ricardo Rodriguez')" title="Clic para firmar"><span class="sig-placeholder" data-code="1108937084">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1006003970">
+                        <td class="center"><strong>10</strong></td>
+                        <td>Hermes Morales</td>
+                        <td class="center">1006003970</td>
+                        <td class="center">3204731899</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1006003970', 'Hermes Morales')" title="Clic para firmar"><span class="sig-placeholder" data-code="1006003970">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELE120201039">
+                        <td class="center"><strong>11</strong></td>
+                        <td>solman rojas solarte</td>
+                        <td class="center">ELE120201039</td>
+                        <td class="center">3224823934</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE120201039', 'solman rojas solarte')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE120201039">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELEC1234">
+                        <td class="center"><strong>12</strong></td>
+                        <td>Danny Cruz</td>
+                        <td class="center">ELEC1234</td>
+                        <td class="center">3225295378</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELEC1234', 'Danny Cruz')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELEC1234">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="11309380">
+                        <td class="center"><strong>13</strong></td>
+                        <td>William Ramirez gutierrez</td>
+                        <td class="center">11309380</td>
+                        <td class="center">3108181836</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('11309380', 'William Ramirez gutierrez')" title="Clic para firmar"><span class="sig-placeholder" data-code="11309380">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1007163619">
+                        <td class="center"><strong>14</strong></td>
+                        <td>cristian david adamez ceballes</td>
+                        <td class="center">1007163619</td>
+                        <td class="center">3116307784</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1007163619', 'cristian david adamez ceballes')" title="Clic para firmar"><span class="sig-placeholder" data-code="1007163619">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELE0120242022">
+                        <td class="center"><strong>15</strong></td>
+                        <td>Alvaro Andrés González albañil</td>
+                        <td class="center">ELE0120242022</td>
+                        <td class="center">3176543168</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE0120242022', 'Alvaro Andrés González albañil')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE0120242022">___________________</span></td>
+                    </tr>
+        
+                </tbody>
+            </table>
+
+            <footer class="letter-footer">
+                <p>Agradecemos de antemano su amable atención, receptividad y pronta gestión favorable a esta solicitud.</p>
+                <div class="sign-placeholder">
+                    REPRESENTACIÓN ESTUDIANTIL - INGENIERÍA ELÉCTRICA<br>
+                    Fundación Escuela Tecnológica de Neiva - FET
+                </div>
+            </footer>
+        </article>
+    
+        <!-- Hoja de Carta: ELE0300116 -->
+        <article class="page-sheet" data-code="ELE0300116">
+            <header class="header-top">
+                <div class="header-logo">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <div class="header-text">
+                        <h2>FUNDACIÓN ESCUELA TECNOLÓGICA DE NEIVA</h2>
+                        <p>"Jesús Oviedo Pérez" - FET | Programa de Ingeniería Eléctrica</p>
+                    </div>
+                </div>
+                <div class="header-meta">
+                    <p><strong>Neiva, Huila</strong></p>
+                    <p>Octubre de 2026</p>
+                    <span class="counter-badge">15 Estudiantes</span>
+                </div>
+            </header>
+
+            <section class="letter-recipient">
+                <p>Señor:</p>
+                <p class="title">ARQUITECTO MIGUEL ÁNGEL CANCHALA DELGADO</p>
+                <p class="cargo">Director del Programa de Ingeniería Eléctrica</p>
+                <p class="institution">Fundación Escuela Tecnológica de Neiva "Jesús Oviedo Pérez" - FET</p>
+                <p>Ciudad.</p>
+            </section>
+
+            <div class="letter-subject">
+                <strong>ASUNTO:</strong> Solicitud formal de apertura y programación de Curso Vacacional para la asignatura <strong>ELECTIVA III-MATEMATICA FINANCIERA</strong> (Código: <strong>ELE0300116</strong>, Semestre <strong>9°</strong>).
+            </div>
+
+            <div class="letter-body">
+                <p>Respetado Arquitecto Canchala:</p>
+                <p>
+                    Por medio de la presente, nosotros, los estudiantes abajo firmantes pertenecientes al programa de 
+                    <strong>Ingeniería Eléctrica</strong> de la Fundación Escuela Tecnológica de Neiva "Jesús Oviedo Pérez" (FET), nos dirigimos a usted 
+                    de manera cordial y respetuosa con el propósito de solicitar formalmente la apertura y oferta académica del 
+                    <strong>CURSO VACACIONAL</strong> para la siguiente asignatura de nuestro plan de estudios:
+                </p>
+
+                <div class="course-summary-box">
+                    <div class="item"><strong>Asignatura:</strong> ELECTIVA III-MATEMATICA FINANCIERA</div>
+                    <div class="item"><strong>Código Académico:</strong> ELE0300116</div>
+                    <div class="item"><strong>Semestre Académico:</strong> Semestre 9°</div>
+                    <div class="item"><strong>Estudiantes Preinscritos:</strong> 15 solicitantes</div>
+                </div>
+
+                <p>
+                    Esta petición responde a nuestra necesidad académica de avanzar y nivelar nuestro plan curricular, garantizando la continuidad en 
+                    nuestra formación profesional. Manifestamos nuestro firme compromiso de formalizar la matrícula correspondiente y asumir las responsabilidades 
+                    académicas y administrativas que determine la institución. Teniendo en cuenta que cumplimos a cabalidad con el requisito de demanda 
+                    con un grupo consolidado de <strong>15 estudiantes</strong>, solicitamos comedidamente su gestión ante la Coordinación Académica 
+                    para su aprobación, designación docente y respectiva programación de fechas y horarios.
+                </p>
+
+                <p style="margin-bottom: 0.3rem;"><strong>Relación de estudiantes solicitantes y firmas de respaldo:</strong></p>
+            </div>
+
+            <table class="students-table">
+                <thead>
+                    <tr>
+                        <th class="center" style="width: 38px;">N°</th>
+                        <th>Nombre Completo del Estudiante</th>
+                        <th class="center" style="width: 120px;">Cód. Estudiante</th>
+                        <th class="center" style="width: 110px;">Teléfono</th>
+                        <th class="center signature-cell">Firma</th>
+                    </tr>
+                </thead>
+                <tbody>
+    
+                    <tr data-student-code="ELE220251011">
+                        <td class="center"><strong>1</strong></td>
+                        <td>Mauricio Armando Muñoz Gómez</td>
+                        <td class="center">ELE220251011</td>
+                        <td class="center">3137103823</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE220251011', 'Mauricio Armando Muñoz Gómez')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE220251011">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELE1075241505">
+                        <td class="center"><strong>2</strong></td>
+                        <td>Géider René Bonilla Motta</td>
+                        <td class="center">ELE1075241505</td>
+                        <td class="center">3172171412</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE1075241505', 'Géider René Bonilla Motta')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE1075241505">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1006557999">
+                        <td class="center"><strong>3</strong></td>
+                        <td>Mariano Silva</td>
+                        <td class="center">1006557999</td>
+                        <td class="center">3157863943</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1006557999', 'Mariano Silva')" title="Clic para firmar"><span class="sig-placeholder" data-code="1006557999">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="7722839">
+                        <td class="center"><strong>4</strong></td>
+                        <td>Pablo andres aviles</td>
+                        <td class="center">7722839</td>
+                        <td class="center">3114617577</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('7722839', 'Pablo andres aviles')" title="Clic para firmar"><span class="sig-placeholder" data-code="7722839">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="7696096">
+                        <td class="center"><strong>5</strong></td>
+                        <td>arangel tierradentro mosquera</td>
+                        <td class="center">7696096</td>
+                        <td class="center">3115400168</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('7696096', 'arangel tierradentro mosquera')" title="Clic para firmar"><span class="sig-placeholder" data-code="7696096">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1075208119">
+                        <td class="center"><strong>6</strong></td>
+                        <td>Luis Quevedo</td>
+                        <td class="center">1075208119</td>
+                        <td class="center">3157056179</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1075208119', 'Luis Quevedo')" title="Clic para firmar"><span class="sig-placeholder" data-code="1075208119">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="80128546">
+                        <td class="center"><strong>7</strong></td>
+                        <td>Hamilton Giraldo B</td>
+                        <td class="center">80128546</td>
+                        <td class="center">3158954262</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('80128546', 'Hamilton Giraldo B')" title="Clic para firmar"><span class="sig-placeholder" data-code="80128546">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELE202232">
+                        <td class="center"><strong>8</strong></td>
+                        <td>Farid jaramillo</td>
+                        <td class="center">ELE202232</td>
+                        <td class="center">3233843904</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE202232', 'Farid jaramillo')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE202232">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1108937084">
+                        <td class="center"><strong>9</strong></td>
+                        <td>Ricardo Rodriguez</td>
+                        <td class="center">1108937084</td>
+                        <td class="center">3229849503</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1108937084', 'Ricardo Rodriguez')" title="Clic para firmar"><span class="sig-placeholder" data-code="1108937084">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1006003970">
+                        <td class="center"><strong>10</strong></td>
+                        <td>Hermes Morales</td>
+                        <td class="center">1006003970</td>
+                        <td class="center">3204731899</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1006003970', 'Hermes Morales')" title="Clic para firmar"><span class="sig-placeholder" data-code="1006003970">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELE120201039">
+                        <td class="center"><strong>11</strong></td>
+                        <td>solman rojas solarte</td>
+                        <td class="center">ELE120201039</td>
+                        <td class="center">3224823934</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE120201039', 'solman rojas solarte')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE120201039">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="83090551">
+                        <td class="center"><strong>12</strong></td>
+                        <td>JUAN ALEXANDER LUGO</td>
+                        <td class="center">83090551</td>
+                        <td class="center">3127103906</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('83090551', 'JUAN ALEXANDER LUGO')" title="Clic para firmar"><span class="sig-placeholder" data-code="83090551">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1007163619">
+                        <td class="center"><strong>13</strong></td>
+                        <td>cristian david adamez ceballes</td>
+                        <td class="center">1007163619</td>
+                        <td class="center">3116307784</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1007163619', 'cristian david adamez ceballes')" title="Clic para firmar"><span class="sig-placeholder" data-code="1007163619">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1077866338">
+                        <td class="center"><strong>14</strong></td>
+                        <td>Karen viviana Gaona Vargas</td>
+                        <td class="center">1077866338</td>
+                        <td class="center">3202555302</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1077866338', 'Karen viviana Gaona Vargas')" title="Clic para firmar"><span class="sig-placeholder" data-code="1077866338">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELE0120242022">
+                        <td class="center"><strong>15</strong></td>
+                        <td>Alvaro Andrés González albañil</td>
+                        <td class="center">ELE0120242022</td>
+                        <td class="center">3176543168</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE0120242022', 'Alvaro Andrés González albañil')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE0120242022">___________________</span></td>
+                    </tr>
+        
+                </tbody>
+            </table>
+
+            <footer class="letter-footer">
+                <p>Agradecemos de antemano su amable atención, receptividad y pronta gestión favorable a esta solicitud.</p>
+                <div class="sign-placeholder">
+                    REPRESENTACIÓN ESTUDIANTIL - INGENIERÍA ELÉCTRICA<br>
+                    Fundación Escuela Tecnológica de Neiva - FET
+                </div>
+            </footer>
+        </article>
+    
+        <!-- Hoja de Carta: ELE0300747 -->
+        <article class="page-sheet" data-code="ELE0300747">
+            <header class="header-top">
+                <div class="header-logo">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <div class="header-text">
+                        <h2>FUNDACIÓN ESCUELA TECNOLÓGICA DE NEIVA</h2>
+                        <p>"Jesús Oviedo Pérez" - FET | Programa de Ingeniería Eléctrica</p>
+                    </div>
+                </div>
+                <div class="header-meta">
+                    <p><strong>Neiva, Huila</strong></p>
+                    <p>Octubre de 2026</p>
+                    <span class="counter-badge">11 Estudiantes</span>
+                </div>
+            </header>
+
+            <section class="letter-recipient">
+                <p>Señor:</p>
+                <p class="title">ARQUITECTO MIGUEL ÁNGEL CANCHALA DELGADO</p>
+                <p class="cargo">Director del Programa de Ingeniería Eléctrica</p>
+                <p class="institution">Fundación Escuela Tecnológica de Neiva "Jesús Oviedo Pérez" - FET</p>
+                <p>Ciudad.</p>
+            </section>
+
+            <div class="letter-subject">
+                <strong>ASUNTO:</strong> Solicitud formal de apertura y programación de Curso Vacacional para la asignatura <strong>OPTATIVA PROFESIONAL II</strong> (Código: <strong>ELE0300747</strong>, Semestre <strong>9°</strong>).
+            </div>
+
+            <div class="letter-body">
+                <p>Respetado Arquitecto Canchala:</p>
+                <p>
+                    Por medio de la presente, nosotros, los estudiantes abajo firmantes pertenecientes al programa de 
+                    <strong>Ingeniería Eléctrica</strong> de la Fundación Escuela Tecnológica de Neiva "Jesús Oviedo Pérez" (FET), nos dirigimos a usted 
+                    de manera cordial y respetuosa con el propósito de solicitar formalmente la apertura y oferta académica del 
+                    <strong>CURSO VACACIONAL</strong> para la siguiente asignatura de nuestro plan de estudios:
+                </p>
+
+                <div class="course-summary-box">
+                    <div class="item"><strong>Asignatura:</strong> OPTATIVA PROFESIONAL II</div>
+                    <div class="item"><strong>Código Académico:</strong> ELE0300747</div>
+                    <div class="item"><strong>Semestre Académico:</strong> Semestre 9°</div>
+                    <div class="item"><strong>Estudiantes Preinscritos:</strong> 11 solicitantes</div>
+                </div>
+
+                <p>
+                    Esta petición responde a nuestra necesidad académica de avanzar y nivelar nuestro plan curricular, garantizando la continuidad en 
+                    nuestra formación profesional. Manifestamos nuestro firme compromiso de formalizar la matrícula correspondiente y asumir las responsabilidades 
+                    académicas y administrativas que determine la institución. Teniendo en cuenta que cumplimos a cabalidad con el requisito de demanda 
+                    con un grupo consolidado de <strong>11 estudiantes</strong>, solicitamos comedidamente su gestión ante la Coordinación Académica 
+                    para su aprobación, designación docente y respectiva programación de fechas y horarios.
+                </p>
+
+                <p style="margin-bottom: 0.3rem;"><strong>Relación de estudiantes solicitantes y firmas de respaldo:</strong></p>
+            </div>
+
+            <table class="students-table">
+                <thead>
+                    <tr>
+                        <th class="center" style="width: 38px;">N°</th>
+                        <th>Nombre Completo del Estudiante</th>
+                        <th class="center" style="width: 120px;">Cód. Estudiante</th>
+                        <th class="center" style="width: 110px;">Teléfono</th>
+                        <th class="center signature-cell">Firma</th>
+                    </tr>
+                </thead>
+                <tbody>
+    
+                    <tr data-student-code="ELE120251114">
+                        <td class="center"><strong>1</strong></td>
+                        <td>Joselito Medina Chindo</td>
+                        <td class="center">ELE120251114</td>
+                        <td class="center">3186082334</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE120251114', 'Joselito Medina Chindo')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE120251114">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELE220251011">
+                        <td class="center"><strong>2</strong></td>
+                        <td>Mauricio Armando Muñoz Gómez</td>
+                        <td class="center">ELE220251011</td>
+                        <td class="center">3137103823</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE220251011', 'Mauricio Armando Muñoz Gómez')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE220251011">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1075224876">
+                        <td class="center"><strong>3</strong></td>
+                        <td>Charlie jars Cardozo urrego</td>
+                        <td class="center">1075224876</td>
+                        <td class="center">3209454733</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1075224876', 'Charlie jars Cardozo urrego')" title="Clic para firmar"><span class="sig-placeholder" data-code="1075224876">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1075319089">
+                        <td class="center"><strong>4</strong></td>
+                        <td>Jhoan Sebastián Henao Moreno</td>
+                        <td class="center">1075319089</td>
+                        <td class="center">3112670775</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1075319089', 'Jhoan Sebastián Henao Moreno')" title="Clic para firmar"><span class="sig-placeholder" data-code="1075319089">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="7722839">
+                        <td class="center"><strong>5</strong></td>
+                        <td>Pablo andres aviles</td>
+                        <td class="center">7722839</td>
+                        <td class="center">3114617577</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('7722839', 'Pablo andres aviles')" title="Clic para firmar"><span class="sig-placeholder" data-code="7722839">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELE1-20251124">
+                        <td class="center"><strong>6</strong></td>
+                        <td>Ronald Mosquera</td>
+                        <td class="center">ELE1-20251124</td>
+                        <td class="center">3206368341</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE1-20251124', 'Ronald Mosquera')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE1-20251124">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1081154403">
+                        <td class="center"><strong>7</strong></td>
+                        <td>Felipe Oliveros</td>
+                        <td class="center">1081154403</td>
+                        <td class="center">3108084096</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1081154403', 'Felipe Oliveros')" title="Clic para firmar"><span class="sig-placeholder" data-code="1081154403">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1061690977">
+                        <td class="center"><strong>8</strong></td>
+                        <td>Andrés Felipe Muñoz</td>
+                        <td class="center">1061690977</td>
+                        <td class="center">3108840329</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1061690977', 'Andrés Felipe Muñoz')" title="Clic para firmar"><span class="sig-placeholder" data-code="1061690977">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1075265343">
+                        <td class="center"><strong>9</strong></td>
+                        <td>Jorge Mario Carballo Galindo</td>
+                        <td class="center">1075265343</td>
+                        <td class="center">3167563385</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1075265343', 'Jorge Mario Carballo Galindo')" title="Clic para firmar"><span class="sig-placeholder" data-code="1075265343">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELEC1234">
+                        <td class="center"><strong>10</strong></td>
+                        <td>Danny Cruz</td>
+                        <td class="center">ELEC1234</td>
+                        <td class="center">3225295378</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELEC1234', 'Danny Cruz')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELEC1234">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1007163619">
+                        <td class="center"><strong>11</strong></td>
+                        <td>cristian david adamez ceballes</td>
+                        <td class="center">1007163619</td>
+                        <td class="center">3116307784</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1007163619', 'cristian david adamez ceballes')" title="Clic para firmar"><span class="sig-placeholder" data-code="1007163619">___________________</span></td>
+                    </tr>
+        
+                </tbody>
+            </table>
+
+            <footer class="letter-footer">
+                <p>Agradecemos de antemano su amable atención, receptividad y pronta gestión favorable a esta solicitud.</p>
+                <div class="sign-placeholder">
+                    REPRESENTACIÓN ESTUDIANTIL - INGENIERÍA ELÉCTRICA<br>
+                    Fundación Escuela Tecnológica de Neiva - FET
+                </div>
+            </footer>
+        </article>
+    
+        <!-- Hoja de Carta: ELE0300743 -->
+        <article class="page-sheet" data-code="ELE0300743">
+            <header class="header-top">
+                <div class="header-logo">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <div class="header-text">
+                        <h2>FUNDACIÓN ESCUELA TECNOLÓGICA DE NEIVA</h2>
+                        <p>"Jesús Oviedo Pérez" - FET | Programa de Ingeniería Eléctrica</p>
+                    </div>
+                </div>
+                <div class="header-meta">
+                    <p><strong>Neiva, Huila</strong></p>
+                    <p>Octubre de 2026</p>
+                    <span class="counter-badge">10 Estudiantes</span>
+                </div>
+            </header>
+
+            <section class="letter-recipient">
+                <p>Señor:</p>
+                <p class="title">ARQUITECTO MIGUEL ÁNGEL CANCHALA DELGADO</p>
+                <p class="cargo">Director del Programa de Ingeniería Eléctrica</p>
+                <p class="institution">Fundación Escuela Tecnológica de Neiva "Jesús Oviedo Pérez" - FET</p>
+                <p>Ciudad.</p>
+            </section>
+
+            <div class="letter-subject">
+                <strong>ASUNTO:</strong> Solicitud formal de apertura y programación de Curso Vacacional para la asignatura <strong>OPERACIONES Y MANTENIMIENTO II</strong> (Código: <strong>ELE0300743</strong>, Semestre <strong>9°</strong>).
+            </div>
+
+            <div class="letter-body">
+                <p>Respetado Arquitecto Canchala:</p>
+                <p>
+                    Por medio de la presente, nosotros, los estudiantes abajo firmantes pertenecientes al programa de 
+                    <strong>Ingeniería Eléctrica</strong> de la Fundación Escuela Tecnológica de Neiva "Jesús Oviedo Pérez" (FET), nos dirigimos a usted 
+                    de manera cordial y respetuosa con el propósito de solicitar formalmente la apertura y oferta académica del 
+                    <strong>CURSO VACACIONAL</strong> para la siguiente asignatura de nuestro plan de estudios:
+                </p>
+
+                <div class="course-summary-box">
+                    <div class="item"><strong>Asignatura:</strong> OPERACIONES Y MANTENIMIENTO II</div>
+                    <div class="item"><strong>Código Académico:</strong> ELE0300743</div>
+                    <div class="item"><strong>Semestre Académico:</strong> Semestre 9°</div>
+                    <div class="item"><strong>Estudiantes Preinscritos:</strong> 10 solicitantes</div>
+                </div>
+
+                <p>
+                    Esta petición responde a nuestra necesidad académica de avanzar y nivelar nuestro plan curricular, garantizando la continuidad en 
+                    nuestra formación profesional. Manifestamos nuestro firme compromiso de formalizar la matrícula correspondiente y asumir las responsabilidades 
+                    académicas y administrativas que determine la institución. Teniendo en cuenta que cumplimos a cabalidad con el requisito de demanda 
+                    con un grupo consolidado de <strong>10 estudiantes</strong>, solicitamos comedidamente su gestión ante la Coordinación Académica 
+                    para su aprobación, designación docente y respectiva programación de fechas y horarios.
+                </p>
+
+                <p style="margin-bottom: 0.3rem;"><strong>Relación de estudiantes solicitantes y firmas de respaldo:</strong></p>
+            </div>
+
+            <table class="students-table">
+                <thead>
+                    <tr>
+                        <th class="center" style="width: 38px;">N°</th>
+                        <th>Nombre Completo del Estudiante</th>
+                        <th class="center" style="width: 120px;">Cód. Estudiante</th>
+                        <th class="center" style="width: 110px;">Teléfono</th>
+                        <th class="center signature-cell">Firma</th>
+                    </tr>
+                </thead>
+                <tbody>
+    
+                    <tr data-student-code="1075224876">
+                        <td class="center"><strong>1</strong></td>
+                        <td>Charlie jars Cardozo urrego</td>
+                        <td class="center">1075224876</td>
+                        <td class="center">3209454733</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1075224876', 'Charlie jars Cardozo urrego')" title="Clic para firmar"><span class="sig-placeholder" data-code="1075224876">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1075319089">
+                        <td class="center"><strong>2</strong></td>
+                        <td>Jhoan Sebastián Henao Moreno</td>
+                        <td class="center">1075319089</td>
+                        <td class="center">3112670775</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1075319089', 'Jhoan Sebastián Henao Moreno')" title="Clic para firmar"><span class="sig-placeholder" data-code="1075319089">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="10296571">
+                        <td class="center"><strong>3</strong></td>
+                        <td>Ivan Mauricio Aguirre</td>
+                        <td class="center">10296571</td>
+                        <td class="center">3176472761</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('10296571', 'Ivan Mauricio Aguirre')" title="Clic para firmar"><span class="sig-placeholder" data-code="10296571">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="0">
+                        <td class="center"><strong>4</strong></td>
+                        <td>Hector Enrique Marrugo Monterrosa</td>
+                        <td class="center">0</td>
+                        <td class="center">3013844718</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('0', 'Hector Enrique Marrugo Monterrosa')" title="Clic para firmar"><span class="sig-placeholder" data-code="0">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1081154403">
+                        <td class="center"><strong>5</strong></td>
+                        <td>Felipe Oliveros</td>
+                        <td class="center">1081154403</td>
+                        <td class="center">3108084096</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1081154403', 'Felipe Oliveros')" title="Clic para firmar"><span class="sig-placeholder" data-code="1081154403">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1075265343">
+                        <td class="center"><strong>6</strong></td>
+                        <td>Jorge Mario Carballo Galindo</td>
+                        <td class="center">1075265343</td>
+                        <td class="center">3167563385</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1075265343', 'Jorge Mario Carballo Galindo')" title="Clic para firmar"><span class="sig-placeholder" data-code="1075265343">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELE120212085">
+                        <td class="center"><strong>7</strong></td>
+                        <td>JULIAN ANDRES MARTINEZ VERGARA</td>
+                        <td class="center">ELE120212085</td>
+                        <td class="center">3102713176</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE120212085', 'JULIAN ANDRES MARTINEZ VERGARA')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE120212085">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1124862386">
+                        <td class="center"><strong>8</strong></td>
+                        <td>Astrid Carolina Becerra Cordoba</td>
+                        <td class="center">1124862386</td>
+                        <td class="center">3209437670</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1124862386', 'Astrid Carolina Becerra Cordoba')" title="Clic para firmar"><span class="sig-placeholder" data-code="1124862386">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="28733362">
+                        <td class="center"><strong>9</strong></td>
+                        <td>Gladys Hernández</td>
+                        <td class="center">28733362</td>
+                        <td class="center">3232935781</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('28733362', 'Gladys Hernández')" title="Clic para firmar"><span class="sig-placeholder" data-code="28733362">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELEC1234">
+                        <td class="center"><strong>10</strong></td>
+                        <td>Danny Cruz</td>
+                        <td class="center">ELEC1234</td>
+                        <td class="center">3225295378</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELEC1234', 'Danny Cruz')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELEC1234">___________________</span></td>
+                    </tr>
+        
+                </tbody>
+            </table>
+
+            <footer class="letter-footer">
+                <p>Agradecemos de antemano su amable atención, receptividad y pronta gestión favorable a esta solicitud.</p>
+                <div class="sign-placeholder">
+                    REPRESENTACIÓN ESTUDIANTIL - INGENIERÍA ELÉCTRICA<br>
+                    Fundación Escuela Tecnológica de Neiva - FET
+                </div>
+            </footer>
+        </article>
+    
+        <!-- Hoja de Carta: ELE0300730 -->
+        <article class="page-sheet" data-code="ELE0300730">
+            <header class="header-top">
+                <div class="header-logo">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <div class="header-text">
+                        <h2>FUNDACIÓN ESCUELA TECNOLÓGICA DE NEIVA</h2>
+                        <p>"Jesús Oviedo Pérez" - FET | Programa de Ingeniería Eléctrica</p>
+                    </div>
+                </div>
+                <div class="header-meta">
+                    <p><strong>Neiva, Huila</strong></p>
+                    <p>Octubre de 2026</p>
+                    <span class="counter-badge">10 Estudiantes</span>
+                </div>
+            </header>
+
+            <section class="letter-recipient">
+                <p>Señor:</p>
+                <p class="title">ARQUITECTO MIGUEL ÁNGEL CANCHALA DELGADO</p>
+                <p class="cargo">Director del Programa de Ingeniería Eléctrica</p>
+                <p class="institution">Fundación Escuela Tecnológica de Neiva "Jesús Oviedo Pérez" - FET</p>
+                <p>Ciudad.</p>
+            </section>
+
+            <div class="letter-subject">
+                <strong>ASUNTO:</strong> Solicitud formal de apertura y programación de Curso Vacacional para la asignatura <strong>SISTEMAS DE DISTRIBUCIÓN DE ENERGÍA</strong> (Código: <strong>ELE0300730</strong>, Semestre <strong>7°</strong>).
+            </div>
+
+            <div class="letter-body">
+                <p>Respetado Arquitecto Canchala:</p>
+                <p>
+                    Por medio de la presente, nosotros, los estudiantes abajo firmantes pertenecientes al programa de 
+                    <strong>Ingeniería Eléctrica</strong> de la Fundación Escuela Tecnológica de Neiva "Jesús Oviedo Pérez" (FET), nos dirigimos a usted 
+                    de manera cordial y respetuosa con el propósito de solicitar formalmente la apertura y oferta académica del 
+                    <strong>CURSO VACACIONAL</strong> para la siguiente asignatura de nuestro plan de estudios:
+                </p>
+
+                <div class="course-summary-box">
+                    <div class="item"><strong>Asignatura:</strong> SISTEMAS DE DISTRIBUCIÓN DE ENERGÍA</div>
+                    <div class="item"><strong>Código Académico:</strong> ELE0300730</div>
+                    <div class="item"><strong>Semestre Académico:</strong> Semestre 7°</div>
+                    <div class="item"><strong>Estudiantes Preinscritos:</strong> 10 solicitantes</div>
+                </div>
+
+                <p>
+                    Esta petición responde a nuestra necesidad académica de avanzar y nivelar nuestro plan curricular, garantizando la continuidad en 
+                    nuestra formación profesional. Manifestamos nuestro firme compromiso de formalizar la matrícula correspondiente y asumir las responsabilidades 
+                    académicas y administrativas que determine la institución. Teniendo en cuenta que cumplimos a cabalidad con el requisito de demanda 
+                    con un grupo consolidado de <strong>10 estudiantes</strong>, solicitamos comedidamente su gestión ante la Coordinación Académica 
+                    para su aprobación, designación docente y respectiva programación de fechas y horarios.
+                </p>
+
+                <p style="margin-bottom: 0.3rem;"><strong>Relación de estudiantes solicitantes y firmas de respaldo:</strong></p>
+            </div>
+
+            <table class="students-table">
+                <thead>
+                    <tr>
+                        <th class="center" style="width: 38px;">N°</th>
+                        <th>Nombre Completo del Estudiante</th>
+                        <th class="center" style="width: 120px;">Cód. Estudiante</th>
+                        <th class="center" style="width: 110px;">Teléfono</th>
+                        <th class="center signature-cell">Firma</th>
+                    </tr>
+                </thead>
+                <tbody>
+    
+                    <tr data-student-code="20098">
+                        <td class="center"><strong>1</strong></td>
+                        <td>Gladys Eliana Hernández</td>
+                        <td class="center">20098</td>
+                        <td class="center">3232935781</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('20098', 'Gladys Eliana Hernández')" title="Clic para firmar"><span class="sig-placeholder" data-code="20098">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1075319089">
+                        <td class="center"><strong>2</strong></td>
+                        <td>Jhoan Sebastián Henao Moreno</td>
+                        <td class="center">1075319089</td>
+                        <td class="center">3112670775</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1075319089', 'Jhoan Sebastián Henao Moreno')" title="Clic para firmar"><span class="sig-placeholder" data-code="1075319089">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="7722839">
+                        <td class="center"><strong>3</strong></td>
+                        <td>Pablo andres aviles</td>
+                        <td class="center">7722839</td>
+                        <td class="center">3114617577</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('7722839', 'Pablo andres aviles')" title="Clic para firmar"><span class="sig-placeholder" data-code="7722839">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1005703053">
+                        <td class="center"><strong>4</strong></td>
+                        <td>Edwin Leandro Capera Romero</td>
+                        <td class="center">1005703053</td>
+                        <td class="center">3209155258</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1005703053', 'Edwin Leandro Capera Romero')" title="Clic para firmar"><span class="sig-placeholder" data-code="1005703053">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1075258644">
+                        <td class="center"><strong>5</strong></td>
+                        <td>yeison Camilo</td>
+                        <td class="center">1075258644</td>
+                        <td class="center">3209627691</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1075258644', 'yeison Camilo')" title="Clic para firmar"><span class="sig-placeholder" data-code="1075258644">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1061694993">
+                        <td class="center"><strong>6</strong></td>
+                        <td>Holman Diego Fernández Ramírez</td>
+                        <td class="center">1061694993</td>
+                        <td class="center">3012113817</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1061694993', 'Holman Diego Fernández Ramírez')" title="Clic para firmar"><span class="sig-placeholder" data-code="1061694993">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="ELE120212040">
+                        <td class="center"><strong>7</strong></td>
+                        <td>Michael Mauricio Rojas Plaza</td>
+                        <td class="center">ELE120212040</td>
+                        <td class="center">3123751445</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('ELE120212040', 'Michael Mauricio Rojas Plaza')" title="Clic para firmar"><span class="sig-placeholder" data-code="ELE120212040">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1019072230">
+                        <td class="center"><strong>8</strong></td>
+                        <td>juan camilo murillo moreno</td>
+                        <td class="center">1019072230</td>
+                        <td class="center">3106013444</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1019072230', 'juan camilo murillo moreno')" title="Clic para firmar"><span class="sig-placeholder" data-code="1019072230">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1084923515">
+                        <td class="center"><strong>9</strong></td>
+                        <td>Jhan carlos barragan</td>
+                        <td class="center">1084923515</td>
+                        <td class="center">3204382761</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1084923515', 'Jhan carlos barragan')" title="Clic para firmar"><span class="sig-placeholder" data-code="1084923515">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1130657578">
+                        <td class="center"><strong>10</strong></td>
+                        <td>Daniel Andres Quintero Sandoval</td>
+                        <td class="center">1130657578</td>
+                        <td class="center">3124805685</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1130657578', 'Daniel Andres Quintero Sandoval')" title="Clic para firmar"><span class="sig-placeholder" data-code="1130657578">___________________</span></td>
+                    </tr>
+        
+                </tbody>
+            </table>
+
+            <footer class="letter-footer">
+                <p>Agradecemos de antemano su amable atención, receptividad y pronta gestión favorable a esta solicitud.</p>
+                <div class="sign-placeholder">
+                    REPRESENTACIÓN ESTUDIANTIL - INGENIERÍA ELÉCTRICA<br>
+                    Fundación Escuela Tecnológica de Neiva - FET
+                </div>
+            </footer>
+        </article>
+    
+        <!-- Hoja de Carta: ELE0300733 -->
+        <article class="page-sheet" data-code="ELE0300733">
+            <header class="header-top">
+                <div class="header-logo">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <div class="header-text">
+                        <h2>FUNDACIÓN ESCUELA TECNOLÓGICA DE NEIVA</h2>
+                        <p>"Jesús Oviedo Pérez" - FET | Programa de Ingeniería Eléctrica</p>
+                    </div>
+                </div>
+                <div class="header-meta">
+                    <p><strong>Neiva, Huila</strong></p>
+                    <p>Octubre de 2026</p>
+                    <span class="counter-badge">10 Estudiantes</span>
+                </div>
+            </header>
+
+            <section class="letter-recipient">
+                <p>Señor:</p>
+                <p class="title">ARQUITECTO MIGUEL ÁNGEL CANCHALA DELGADO</p>
+                <p class="cargo">Director del Programa de Ingeniería Eléctrica</p>
+                <p class="institution">Fundación Escuela Tecnológica de Neiva "Jesús Oviedo Pérez" - FET</p>
+                <p>Ciudad.</p>
+            </section>
+
+            <div class="letter-subject">
+                <strong>ASUNTO:</strong> Solicitud formal de apertura y programación de Curso Vacacional para la asignatura <strong>MÁQUINAS ELÉCTRICAS II TP</strong> (Código: <strong>ELE0300733</strong>, Semestre <strong>7°</strong>).
+            </div>
+
+            <div class="letter-body">
+                <p>Respetado Arquitecto Canchala:</p>
+                <p>
+                    Por medio de la presente, nosotros, los estudiantes abajo firmantes pertenecientes al programa de 
+                    <strong>Ingeniería Eléctrica</strong> de la Fundación Escuela Tecnológica de Neiva "Jesús Oviedo Pérez" (FET), nos dirigimos a usted 
+                    de manera cordial y respetuosa con el propósito de solicitar formalmente la apertura y oferta académica del 
+                    <strong>CURSO VACACIONAL</strong> para la siguiente asignatura de nuestro plan de estudios:
+                </p>
+
+                <div class="course-summary-box">
+                    <div class="item"><strong>Asignatura:</strong> MÁQUINAS ELÉCTRICAS II TP</div>
+                    <div class="item"><strong>Código Académico:</strong> ELE0300733</div>
+                    <div class="item"><strong>Semestre Académico:</strong> Semestre 7°</div>
+                    <div class="item"><strong>Estudiantes Preinscritos:</strong> 10 solicitantes</div>
+                </div>
+
+                <p>
+                    Esta petición responde a nuestra necesidad académica de avanzar y nivelar nuestro plan curricular, garantizando la continuidad en 
+                    nuestra formación profesional. Manifestamos nuestro firme compromiso de formalizar la matrícula correspondiente y asumir las responsabilidades 
+                    académicas y administrativas que determine la institución. Teniendo en cuenta que cumplimos a cabalidad con el requisito de demanda 
+                    con un grupo consolidado de <strong>10 estudiantes</strong>, solicitamos comedidamente su gestión ante la Coordinación Académica 
+                    para su aprobación, designación docente y respectiva programación de fechas y horarios.
+                </p>
+
+                <p style="margin-bottom: 0.3rem;"><strong>Relación de estudiantes solicitantes y firmas de respaldo:</strong></p>
+            </div>
+
+            <table class="students-table">
+                <thead>
+                    <tr>
+                        <th class="center" style="width: 38px;">N°</th>
+                        <th>Nombre Completo del Estudiante</th>
+                        <th class="center" style="width: 120px;">Cód. Estudiante</th>
+                        <th class="center" style="width: 110px;">Teléfono</th>
+                        <th class="center signature-cell">Firma</th>
+                    </tr>
+                </thead>
+                <tbody>
+    
+                    <tr data-student-code="20098">
+                        <td class="center"><strong>1</strong></td>
+                        <td>Gladys Eliana Hernández</td>
+                        <td class="center">20098</td>
+                        <td class="center">3232935781</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('20098', 'Gladys Eliana Hernández')" title="Clic para firmar"><span class="sig-placeholder" data-code="20098">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1061690977">
+                        <td class="center"><strong>2</strong></td>
+                        <td>Andrés Felipe Muñoz</td>
+                        <td class="center">1061690977</td>
+                        <td class="center">3108840329</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1061690977', 'Andrés Felipe Muñoz')" title="Clic para firmar"><span class="sig-placeholder" data-code="1061690977">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1061694993">
+                        <td class="center"><strong>3</strong></td>
+                        <td>Holman Diego Fernández Ramírez</td>
+                        <td class="center">1061694993</td>
+                        <td class="center">3012113817</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1061694993', 'Holman Diego Fernández Ramírez')" title="Clic para firmar"><span class="sig-placeholder" data-code="1061694993">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1019072230">
+                        <td class="center"><strong>4</strong></td>
+                        <td>juan camilo murillo moreno</td>
+                        <td class="center">1019072230</td>
+                        <td class="center">3106013444</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1019072230', 'juan camilo murillo moreno')" title="Clic para firmar"><span class="sig-placeholder" data-code="1019072230">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1114399612">
+                        <td class="center"><strong>5</strong></td>
+                        <td>RICARDO CUBILLOS</td>
+                        <td class="center">1114399612</td>
+                        <td class="center">3146588017</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1114399612', 'RICARDO CUBILLOS')" title="Clic para firmar"><span class="sig-placeholder" data-code="1114399612">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1124862386">
+                        <td class="center"><strong>6</strong></td>
+                        <td>Astrid Carolina Becerra Cordoba</td>
+                        <td class="center">1124862386</td>
+                        <td class="center">3209437670</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1124862386', 'Astrid Carolina Becerra Cordoba')" title="Clic para firmar"><span class="sig-placeholder" data-code="1124862386">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1084923515">
+                        <td class="center"><strong>7</strong></td>
+                        <td>Jhan carlos barragan</td>
+                        <td class="center">1084923515</td>
+                        <td class="center">3204382761</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1084923515', 'Jhan carlos barragan')" title="Clic para firmar"><span class="sig-placeholder" data-code="1084923515">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1077866338">
+                        <td class="center"><strong>8</strong></td>
+                        <td>Karen viviana Gaona Vargas</td>
+                        <td class="center">1077866338</td>
+                        <td class="center">3202555302</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1077866338', 'Karen viviana Gaona Vargas')" title="Clic para firmar"><span class="sig-placeholder" data-code="1077866338">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1130657578">
+                        <td class="center"><strong>9</strong></td>
+                        <td>Daniel Andres Quintero Sandoval</td>
+                        <td class="center">1130657578</td>
+                        <td class="center">3124805685</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1130657578', 'Daniel Andres Quintero Sandoval')" title="Clic para firmar"><span class="sig-placeholder" data-code="1130657578">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1077722398">
+                        <td class="center"><strong>10</strong></td>
+                        <td>Cristian David Conde Otalora</td>
+                        <td class="center">1077722398</td>
+                        <td class="center">3145554079</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1077722398', 'Cristian David Conde Otalora')" title="Clic para firmar"><span class="sig-placeholder" data-code="1077722398">___________________</span></td>
+                    </tr>
+        
+                </tbody>
+            </table>
+
+            <footer class="letter-footer">
+                <p>Agradecemos de antemano su amable atención, receptividad y pronta gestión favorable a esta solicitud.</p>
+                <div class="sign-placeholder">
+                    REPRESENTACIÓN ESTUDIANTIL - INGENIERÍA ELÉCTRICA<br>
+                    Fundación Escuela Tecnológica de Neiva - FET
+                </div>
+            </footer>
+        </article>
+    
+        <!-- Hoja de Carta: ELE0300731 -->
+        <article class="page-sheet" data-code="ELE0300731">
+            <header class="header-top">
+                <div class="header-logo">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <div class="header-text">
+                        <h2>FUNDACIÓN ESCUELA TECNOLÓGICA DE NEIVA</h2>
+                        <p>"Jesús Oviedo Pérez" - FET | Programa de Ingeniería Eléctrica</p>
+                    </div>
+                </div>
+                <div class="header-meta">
+                    <p><strong>Neiva, Huila</strong></p>
+                    <p>Octubre de 2026</p>
+                    <span class="counter-badge">10 Estudiantes</span>
+                </div>
+            </header>
+
+            <section class="letter-recipient">
+                <p>Señor:</p>
+                <p class="title">ARQUITECTO MIGUEL ÁNGEL CANCHALA DELGADO</p>
+                <p class="cargo">Director del Programa de Ingeniería Eléctrica</p>
+                <p class="institution">Fundación Escuela Tecnológica de Neiva "Jesús Oviedo Pérez" - FET</p>
+                <p>Ciudad.</p>
+            </section>
+
+            <div class="letter-subject">
+                <strong>ASUNTO:</strong> Solicitud formal de apertura y programación de Curso Vacacional para la asignatura <strong>CIRCUITOS ELÉCTRICOS III</strong> (Código: <strong>ELE0300731</strong>, Semestre <strong>7°</strong>).
+            </div>
+
+            <div class="letter-body">
+                <p>Respetado Arquitecto Canchala:</p>
+                <p>
+                    Por medio de la presente, nosotros, los estudiantes abajo firmantes pertenecientes al programa de 
+                    <strong>Ingeniería Eléctrica</strong> de la Fundación Escuela Tecnológica de Neiva "Jesús Oviedo Pérez" (FET), nos dirigimos a usted 
+                    de manera cordial y respetuosa con el propósito de solicitar formalmente la apertura y oferta académica del 
+                    <strong>CURSO VACACIONAL</strong> para la siguiente asignatura de nuestro plan de estudios:
+                </p>
+
+                <div class="course-summary-box">
+                    <div class="item"><strong>Asignatura:</strong> CIRCUITOS ELÉCTRICOS III</div>
+                    <div class="item"><strong>Código Académico:</strong> ELE0300731</div>
+                    <div class="item"><strong>Semestre Académico:</strong> Semestre 7°</div>
+                    <div class="item"><strong>Estudiantes Preinscritos:</strong> 10 solicitantes</div>
+                </div>
+
+                <p>
+                    Esta petición responde a nuestra necesidad académica de avanzar y nivelar nuestro plan curricular, garantizando la continuidad en 
+                    nuestra formación profesional. Manifestamos nuestro firme compromiso de formalizar la matrícula correspondiente y asumir las responsabilidades 
+                    académicas y administrativas que determine la institución. Teniendo en cuenta que cumplimos a cabalidad con el requisito de demanda 
+                    con un grupo consolidado de <strong>10 estudiantes</strong>, solicitamos comedidamente su gestión ante la Coordinación Académica 
+                    para su aprobación, designación docente y respectiva programación de fechas y horarios.
+                </p>
+
+                <p style="margin-bottom: 0.3rem;"><strong>Relación de estudiantes solicitantes y firmas de respaldo:</strong></p>
+            </div>
+
+            <table class="students-table">
+                <thead>
+                    <tr>
+                        <th class="center" style="width: 38px;">N°</th>
+                        <th>Nombre Completo del Estudiante</th>
+                        <th class="center" style="width: 120px;">Cód. Estudiante</th>
+                        <th class="center" style="width: 110px;">Teléfono</th>
+                        <th class="center signature-cell">Firma</th>
+                    </tr>
+                </thead>
+                <tbody>
+    
+                    <tr data-student-code="7722839">
+                        <td class="center"><strong>1</strong></td>
+                        <td>Pablo andres aviles</td>
+                        <td class="center">7722839</td>
+                        <td class="center">3114617577</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('7722839', 'Pablo andres aviles')" title="Clic para firmar"><span class="sig-placeholder" data-code="7722839">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1061814979">
+                        <td class="center"><strong>2</strong></td>
+                        <td>Edward Andrés Cerón Llantén</td>
+                        <td class="center">1061814979</td>
+                        <td class="center">3105179946</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1061814979', 'Edward Andrés Cerón Llantén')" title="Clic para firmar"><span class="sig-placeholder" data-code="1061814979">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="6804620">
+                        <td class="center"><strong>3</strong></td>
+                        <td>Jonathan perez</td>
+                        <td class="center">6804620</td>
+                        <td class="center">3142441213</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('6804620', 'Jonathan perez')" title="Clic para firmar"><span class="sig-placeholder" data-code="6804620">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1075258644">
+                        <td class="center"><strong>4</strong></td>
+                        <td>yeison Camilo</td>
+                        <td class="center">1075258644</td>
+                        <td class="center">3209627691</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1075258644', 'yeison Camilo')" title="Clic para firmar"><span class="sig-placeholder" data-code="1075258644">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1114399612">
+                        <td class="center"><strong>5</strong></td>
+                        <td>RICARDO CUBILLOS</td>
+                        <td class="center">1114399612</td>
+                        <td class="center">3146588017</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1114399612', 'RICARDO CUBILLOS')" title="Clic para firmar"><span class="sig-placeholder" data-code="1114399612">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="28733362">
+                        <td class="center"><strong>6</strong></td>
+                        <td>Gladys Hernández</td>
+                        <td class="center">28733362</td>
+                        <td class="center">3232935781</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('28733362', 'Gladys Hernández')" title="Clic para firmar"><span class="sig-placeholder" data-code="28733362">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1007163619">
+                        <td class="center"><strong>7</strong></td>
+                        <td>cristian david adamez ceballes</td>
+                        <td class="center">1007163619</td>
+                        <td class="center">3116307784</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1007163619', 'cristian david adamez ceballes')" title="Clic para firmar"><span class="sig-placeholder" data-code="1007163619">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1084923515">
+                        <td class="center"><strong>8</strong></td>
+                        <td>Jhan carlos barragan</td>
+                        <td class="center">1084923515</td>
+                        <td class="center">3204382761</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1084923515', 'Jhan carlos barragan')" title="Clic para firmar"><span class="sig-placeholder" data-code="1084923515">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1077866338">
+                        <td class="center"><strong>9</strong></td>
+                        <td>Karen viviana Gaona Vargas</td>
+                        <td class="center">1077866338</td>
+                        <td class="center">3202555302</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1077866338', 'Karen viviana Gaona Vargas')" title="Clic para firmar"><span class="sig-placeholder" data-code="1077866338">___________________</span></td>
+                    </tr>
+        
+                    <tr data-student-code="1130657578">
+                        <td class="center"><strong>10</strong></td>
+                        <td>Daniel Andres Quintero Sandoval</td>
+                        <td class="center">1130657578</td>
+                        <td class="center">3124805685</td>
+                        <td class="signature-cell" style="text-align: center; cursor: pointer;" onclick="openLetterSignModal('1130657578', 'Daniel Andres Quintero Sandoval')" title="Clic para firmar"><span class="sig-placeholder" data-code="1130657578">___________________</span></td>
+                    </tr>
+        
+                </tbody>
+            </table>
+
+            <footer class="letter-footer">
+                <p>Agradecemos de antemano su amable atención, receptividad y pronta gestión favorable a esta solicitud.</p>
+                <div class="sign-placeholder">
+                    REPRESENTACIÓN ESTUDIANTIL - INGENIERÍA ELÉCTRICA<br>
+                    Fundación Escuela Tecnológica de Neiva - FET
+                </div>
+            </footer>
+        </article>
+    
+    </div>
+
+    <!-- Modal Interactivo de Firma en Cartas Imprimibles -->
+    <div id="letter-sig-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.65); z-index:9999; align-items:center; justify-content:center; backdrop-filter:blur(4px);">
+        <div style="background:white; border-radius:12px; width:92%; max-width:460px; padding:1.5rem; box-shadow:0 20px 40px rgba(0,0,0,0.3); font-family:'Roboto',sans-serif;">
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #e2e8f0; padding-bottom:0.75rem; margin-bottom:1rem;">
+                <h3 style="font-family:'Outfit',sans-serif; color:#043d1a; font-size:1.1rem; display:flex; align-items:center; gap:0.5rem; margin:0;">
+                    <i class="fa-solid fa-file-signature" style="color:#d4af37;"></i> Firmar Carta de Solicitud
+                </h3>
+                <button onclick="closeLetterSignModal()" style="background:none; border:none; font-size:1.4rem; cursor:pointer; color:#64748b; line-height:1;">&times;</button>
+            </div>
+            <p style="font-size:0.85rem; color:#475569; margin-bottom:0.8rem; line-height:1.4;">
+                Estudiante: <strong id="letter-modal-student-name" style="color:#043d1a;"></strong><br>
+                Código: <strong id="letter-modal-student-code" style="color:#043d1a;"></strong>
+            </p>
+            <div style="position:relative; width:100%; height:140px; background:#f8fafc; border:2px dashed #cbd5e1; border-radius:8px; overflow:hidden; touch-action:none; cursor:crosshair;">
+                <canvas id="letter-sig-canvas" style="width:100%; height:100%; display:block; touch-action:none;"></canvas>
+                <div style="position:absolute; bottom:25px; left:8%; width:84%; height:1px; background:rgba(148,163,184,0.4); pointer-events:none;"></div>
+                <div id="letter-sig-placeholder" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:0.8rem; color:#94a3b8; pointer-events:none; font-weight:600;">
+                    ✍️ Dibuja tu firma con el dedo o ratón
+                </div>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:1rem;">
+                <button onclick="clearLetterSigCanvas()" style="background:#fee2e2; color:#dc2626; border:1px solid #fca5a5; padding:0.4rem 0.8rem; border-radius:6px; font-weight:600; font-size:0.8rem; cursor:pointer;">
+                    <i class="fa-solid fa-rotate-left"></i> Borrar
+                </button>
+                <div style="display:flex; gap:0.5rem;">
+                    <button onclick="closeLetterSignModal()" style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1; padding:0.4rem 0.8rem; border-radius:6px; font-weight:600; font-size:0.8rem; cursor:pointer;">Cancelar</button>
+                    <button onclick="saveLetterSignature()" style="background:#043d1a; color:#ffd700; border:none; padding:0.45rem 1rem; border-radius:6px; font-weight:700; font-size:0.85rem; cursor:pointer;">
+                        <i class="fa-solid fa-check"></i> Guardar Firma
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function filterLetters(code) {
+            const sheets = document.querySelectorAll('.page-sheet');
+            sheets.forEach(sheet => {
+                if (code === 'all' || sheet.getAttribute('data-code') === code) {
+                    sheet.style.display = 'block';
+                } else {
+                    sheet.style.display = 'none';
+                }
+            });
+        }
+
+        // Sincronización dinámica de firmas desde localStorage y nube
+        document.addEventListener('DOMContentLoaded', () => {
+            syncSignatures();
+            initLetterCanvas();
+        });
+
+        const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbx7zKE41qQi23E7l7yUQNvAT5n80FBnyWD7zV7_fTNzh26eg8kujtZkOeFsf_ulhjgF/exec';
+        const LOCAL_STORAGE_KEY = 'fet_vacacionales_registrations';
+
+        function syncSignatures() {
+            // 1. Local
+            try {
+                const local = localStorage.getItem(LOCAL_STORAGE_KEY);
+                if (local) {
+                    applySignaturesToDom(JSON.parse(local));
+                }
+            } catch(e){}
+
+            // 2. Nube
+            if (BACKEND_URL) {
+                fetch(BACKEND_URL).then(r => r.json()).then(data => {
+                    applySignaturesToDom(data);
+                }).catch(err => console.log('Offline sync:', err));
+            }
+        }
+
+        function applySignaturesToDom(students) {
+            if (!Array.isArray(students)) return;
+            students.forEach(st => {
+                if (st.signature) {
+                    document.querySelectorAll(`tr[data-student-code="${st.code}"] .signature-cell`).forEach(cell => {
+                        cell.innerHTML = `<img src="${st.signature}" alt="Firma ${st.name}" style="max-height: 38px; max-width: 125px; object-fit: contain; display: block; margin: 0 auto;">`;
+                    });
+                }
+            });
+        }
+
+        // Canvas de firma en cartas
+        let letterCanvas, letterCtx, letterPlaceholder;
+        let isDrawing = false, hasDrawn = false, lastX = 0, lastY = 0;
+        let currentSignCode = '', currentSignName = '';
+
+        function initLetterCanvas() {
+            letterCanvas = document.getElementById('letter-sig-canvas');
+            letterPlaceholder = document.getElementById('letter-sig-placeholder');
+            if (!letterCanvas) return;
+            letterCtx = letterCanvas.getContext('2d');
+
+            function getCoords(e) {
+                const rect = letterCanvas.getBoundingClientRect();
+                let clientX = e.clientX, clientY = e.clientY;
+                if (e.touches && e.touches.length > 0) {
+                    clientX = e.touches[0].clientX;
+                    clientY = e.touches[0].clientY;
+                }
+                return { x: clientX - rect.left, y: clientY - rect.top };
+            }
+
+            function start(e) {
+                isDrawing = true;
+                const c = getCoords(e);
+                lastX = c.x; lastY = c.y;
+                if (letterPlaceholder) letterPlaceholder.style.opacity = '0';
+            }
+
+            function draw(e) {
+                if (!isDrawing) return;
+                if (e.cancelable && e.type.startsWith('touch')) e.preventDefault();
+                const c = getCoords(e);
+                letterCtx.beginPath();
+                letterCtx.moveTo(lastX, lastY);
+                letterCtx.lineTo(c.x, c.y);
+                letterCtx.stroke();
+                lastX = c.x; lastY = c.y;
+                hasDrawn = true;
+            }
+
+            function stop() { isDrawing = false; }
+
+            letterCanvas.addEventListener('mousedown', start);
+            letterCanvas.addEventListener('mousemove', draw);
+            window.addEventListener('mouseup', stop);
+
+            letterCanvas.addEventListener('touchstart', (e) => {
+                if (e.cancelable) e.preventDefault();
+                start(e);
+            }, { passive: false });
+            letterCanvas.addEventListener('touchmove', draw, { passive: false });
+            letterCanvas.addEventListener('touchend', stop);
+            letterCanvas.addEventListener('touchcancel', stop);
+        }
+
+        function resizeLetterCanvas() {
+            if (!letterCanvas) return;
+            const rect = letterCanvas.getBoundingClientRect();
+            if (rect.width === 0) return;
+            const dpr = window.devicePixelRatio || 1;
+            letterCanvas.width = rect.width * dpr;
+            letterCanvas.height = rect.height * dpr;
+            letterCtx.scale(dpr, dpr);
+            letterCtx.strokeStyle = '#042a49';
+            letterCtx.lineWidth = 2.4;
+            letterCtx.lineCap = 'round';
+            letterCtx.lineJoin = 'round';
+            hasDrawn = false;
+            if (letterPlaceholder) letterPlaceholder.style.opacity = '1';
+        }
+
+        window.openLetterSignModal = function(code, name) {
+            currentSignCode = code;
+            currentSignName = name;
+            document.getElementById('letter-modal-student-name').textContent = name;
+            document.getElementById('letter-modal-student-code').textContent = code;
+            const modal = document.getElementById('letter-sig-modal');
+            modal.style.display = 'flex';
+            setTimeout(resizeLetterCanvas, 100);
+        };
+
+        window.closeLetterSignModal = function() {
+            const modal = document.getElementById('letter-sig-modal');
+            if (modal) modal.style.display = 'none';
+        };
+
+        window.clearLetterSigCanvas = function() {
+            if (!letterCanvas) return;
+            const rect = letterCanvas.getBoundingClientRect();
+            letterCtx.clearRect(0, 0, rect.width, rect.height);
+            hasDrawn = false;
+            if (letterPlaceholder) letterPlaceholder.style.opacity = '1';
+        };
+
+        window.saveLetterSignature = function() {
+            if (!hasDrawn) {
+                alert('Por favor dibuja tu firma en el recuadro antes de guardar.');
+                return;
+            }
+            const sigData = letterCanvas.toDataURL('image/png');
+
+            // Actualizar DOM
+            document.querySelectorAll(`tr[data-student-code="${currentSignCode}"] .signature-cell`).forEach(cell => {
+                cell.innerHTML = `<img src="${sigData}" alt="Firma ${currentSignName}" style="max-height: 38px; max-width: 125px; object-fit: contain; display: block; margin: 0 auto;">`;
+            });
+
+            // Guardar localmente
+            try {
+                let regs = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
+                let found = regs.find(r => r.code === currentSignCode);
+                if (found) {
+                    found.signature = sigData;
+                    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(regs));
+                    
+                    // Sincronizar en la nube
+                    if (BACKEND_URL) {
+                        fetch(BACKEND_URL, {
+                            method: 'POST',
+                            body: JSON.stringify({ action: 'add', student: found })
+                        });
+                    }
+                }
+            } catch(e){}
+
+            closeLetterSignModal();
+            alert('¡Firma guardada exitosamente!');
+        };
+    </script>
+</body>
+</html>

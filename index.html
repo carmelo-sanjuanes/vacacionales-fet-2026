@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Plataforma de inscripción e interés en Cursos Vacacionales de Ingeniería Eléctrica - FET Jesús Oviedo Pérez.">
+    <title>Cursos Vacacionales - Ingeniería Eléctrica | FET</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSS Estilos -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="background-decorations">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+    </div>
+
+    <div class="app-layout">
+        <!-- Header (Sidebar Vertical en Escritorio) -->
+        <header class="main-header animate-fade-in">
+            <div class="sidebar-top">
+                <i class="fa-solid fa-graduation-cap sidebar-logo"></i>
+                <span class="sidebar-brand-short">FET</span>
+                <span class="sidebar-major-short">Ing. Eléctrica</span>
+            </div>
+            
+            <div class="sidebar-center">
+                <h1 class="vacacionales-title-vertical">VACACIONALES</h1>
+                <span class="sidebar-date-vertical">Dic 2026 / Ene 2027</span>
+            </div>
+            
+            <div class="sidebar-bottom">
+                <div class="sidebar-copyright-vertical">
+                    <p class="copyright-text">&copy; 2026 Ingeniería Eléctrica - FET Neiva "Jesús Oviedo Pérez"</p>
+                    <p class="tagline-text">Diseñado para la Gestión Académica y Programación de Vacacionales</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Área de Contenido Principal -->
+        <div class="main-content-area">
+
+
+        <!-- Main Grid Layout -->
+        <main class="main-grid">
+            <!-- Formulario e Inscripción -->
+            <section class="registration-section animate-fade-in delay-2">
+                <!-- Explicación de cómo funciona (Compacto) -->
+                <div class="card how-it-works-compact">
+                    <div class="card-header-compact">
+                        <h4><i class="fa-solid fa-circle-info text-gradient"></i> ¿Cómo funciona esta plataforma?</h4>
+                    </div>
+                    <div class="guide-steps-horizontal">
+                        <div class="step-mini">
+                            <span class="step-bullet">1</span>
+                            <p>Registra tus datos personales.</p>
+                        </div>
+                        <div class="step-mini">
+                            <span class="step-bullet">2</span>
+                            <p>Marca tus materias de interés.</p>
+                        </div>
+                        <div class="step-mini">
+                            <span class="step-bullet">3</span>
+                            <p>El Score muestra la demanda (mínimo 5 para abrir).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header-accent">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.2rem;">
+                            <h3><i class="fa-solid fa-user-plus"></i> Formulario de Registro</h3>
+                            <button type="button" id="btn-clear-form" class="btn btn-secondary btn-sm" style="padding: 0.2rem 0.5rem; font-size: 0.72rem; height: 26px;" title="Limpiar formulario para registrar a otro estudiante">
+                                <i class="fa-solid fa-rotate-left"></i> Nuevo
+                            </button>
+                        </div>
+                        <p>Ingresa tus datos y selecciona tus materias de interés</p>
+                    </div>
+                    
+                    <form id="registration-form" class="registration-form">
+                        <!-- Datos personales -->
+                        <div class="form-group-grid">
+                            <div class="form-group">
+                                <label for="student-name"><i class="fa-solid fa-user"></i> Nombre Completo</label>
+                                <input type="text" id="student-name" required placeholder="Ej. Juan Pérez">
+                            </div>
+                            <div class="form-group">
+                                <label for="student-code"><i class="fa-solid fa-id-card"></i> Código Estudiante</label>
+                                <input type="text" id="student-code" required placeholder="Ej. ELE001122">
+                            </div>
+                            <div class="form-group">
+                                <label for="student-phone"><i class="fa-solid fa-phone"></i> Teléfono Móvil</label>
+                                <input type="tel" id="student-phone" required placeholder="Ej. 3123456789">
+                            </div>
+                        </div>
+
+                        <!-- Selección de materias -->
+                        <div class="subjects-container">
+                            <div class="subjects-header-row">
+                                <div class="title-meta">
+                                    <h4 class="section-title"><i class="fa-solid fa-book-bookmark"></i> Asignaturas de Interés</h4>
+                                    <p class="section-subtitle">Selecciona una o más materias en las que deseas registrar tu interés:</p>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-register-header">
+                                    <span class="btn-text">Registrar Mi Interés</span>
+                                    <i class="fa-solid fa-paper-plane"></i>
+                                </button>
+                            </div>
+                            
+                            <!-- Pestañas de Semestres -->
+                            <div class="semester-tabs">
+                                <button type="button" class="tab-btn active" data-semester="7">Semestre 7</button>
+                                <button type="button" class="tab-btn" data-semester="8">Semestre 8</button>
+                                <button type="button" class="tab-btn" data-semester="9">Semestre 9</button>
+                            </div>
+
+                            <!-- Listas de asignaturas por semestre -->
+                            <div class="semester-panes">
+                                <!-- Semestre 7 -->
+                                <div class="tab-pane active" id="pane-7">
+                                    <div class="subjects-grid" id="subjects-list-7">
+                                        <!-- Generado dinámicamente -->
+                                    </div>
+                                </div>
+                                <!-- Semestre 8 -->
+                                <div class="tab-pane" id="pane-8">
+                                    <div class="subjects-grid" id="subjects-list-8">
+                                        <!-- Generado dinámicamente -->
+                                    </div>
+                                </div>
+                                <!-- Semestre 9 -->
+                                <div class="tab-pane" id="pane-9">
+                                    <div class="subjects-grid" id="subjects-list-9">
+                                        <!-- Generado dinámicamente -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Módulo de Firma Digital del Estudiante (Móvil y Escritorio) -->
+                        <div class="signature-box-wrapper">
+                            <div class="signature-box-header">
+                                <label for="sig-canvas-form"><i class="fa-solid fa-signature"></i> Firma de Respaldo de Solicitud (Celular o PC)</label>
+                                <button type="button" class="btn-clear-sig" id="btn-clear-sig-form" title="Borrar y volver a firmar">
+                                    <i class="fa-solid fa-rotate-left"></i> Borrar Firma
+                                </button>
+                            </div>
+                            <p class="signature-hint">Firma con tu dedo (en celular/pantalla táctil) o con el ratón (en computador) para respaldar la carta oficial al Director.</p>
+                            <div class="canvas-pad-container" id="canvas-pad-container-form">
+                                <canvas id="sig-canvas-form" class="signature-canvas"></canvas>
+                                <div class="signature-guide-line"></div>
+                                <div class="signature-canvas-placeholder" id="sig-placeholder-form">
+                                    <i class="fa-solid fa-pen-nib"></i> Dibuja tu firma aquí
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; justify-content: flex-end; margin-top: 0.5rem;">
+                            <button type="submit" class="btn btn-primary" style="width: 100%; height: 38px; font-weight: 700; font-size: 0.88rem;">
+                                <i class="fa-solid fa-paper-plane"></i> Registrar Mi Interés y Firma
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Dashboard de Resultados y Scores -->
+            <section class="dashboard-section animate-fade-in delay-3">
+                <!-- Panel de Score General -->
+                <div class="card score-dashboard-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-chart-simple text-gradient"></i> Score de Asignaturas</h3>
+                        <span class="total-badge" id="total-registrations">0 Registrados</span>
+                    </div>
+                    
+                    <div class="score-filters">
+                        <button class="filter-btn active" data-filter="all">Todas</button>
+                        <button class="filter-btn" data-filter="7">Sem. 7</button>
+                        <button class="filter-btn" data-filter="8">Sem. 8</button>
+                        <button class="filter-btn" data-filter="9">Sem. 9</button>
+                    </div>
+
+                    <div class="score-list" id="score-items-container">
+                        <!-- Generado dinámicamente -->
+                    </div>
+                </div>
+
+                <!-- Estudiantes Registrados -->
+                <div class="card student-list-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-users text-gradient"></i> Estudiantes Inscritos</h3>
+                        <div style="display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap;">
+                            <button type="button" id="btn-open-fast-sign" class="btn btn-secondary btn-sm" style="color: var(--accent-primary); border-color: rgba(255, 215, 0, 0.4);" title="Firmar la solicitud formal con el dedo o ratón">
+                                <i class="fa-solid fa-pen-nib"></i> Firmar Carta
+                            </button>
+                            <a href="cartas_solicitud_imprimibles.html" target="_blank" class="btn btn-secondary btn-sm" style="color: var(--accent-color); border-color: rgba(255, 215, 0, 0.4); text-decoration: none;" title="Ver e imprimir cartas formales dirigidas al Director de Programa">
+                                <i class="fa-solid fa-file-signature"></i> Cartas (&ge;10)
+                            </a>
+                            <button id="btn-export" class="btn btn-secondary btn-sm">
+                                <i class="fa-solid fa-file-csv"></i> Exportar
+                            </button>
+                        </div>
+                    </div>
+                    <div class="search-bar-wrapper">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" id="search-student" placeholder="Buscar por nombre, código...">
+                    </div>
+                    <div class="table-container">
+                        <table class="students-table">
+                            <thead>
+                                <tr>
+                                    <th>Estudiante</th>
+                                    <th>Código / Tel</th>
+                                    <th>Materias</th>
+                                    <th>Firma / Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody id="students-table-body">
+                                <tr>
+                                    <td colspan="4" class="empty-state">
+                                        <i class="fa-regular fa-folder-open"></i>
+                                        <p>No hay estudiantes registrados aún.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="main-footer animate-fade-in delay-4">
+            <p>&copy; 2026 Ingeniería Eléctrica - Fundación Escuela Tecnológica de Neiva Jesús Oviedo Pérez</p>
+            <p class="tech-tag">Diseñado para la Gestión Académica y Programación de Vacacionales</p>
+        </footer>
+        </div> <!-- Fin main-content-area -->
+    </div> <!-- Fin app-layout -->
+
+    <!-- Modal para ver interesados en una asignatura específica -->
+    <div id="student-modal" class="modal">
+        <div class="modal-content card">
+            <div class="modal-header">
+                <h3 id="modal-subject-title">Interesados en la Materia</h3>
+                <button class="close-modal btn-icon"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="subject-meta">
+                    <span id="modal-subject-code" class="subject-code-tag"></span>
+                    <span id="modal-subject-count" class="subject-count-tag"></span>
+                </div>
+                <div class="list-container">
+                    <ul id="modal-students-list" class="modal-students-list">
+                        <!-- Generado dinámicamente -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Firmar Carta de Solicitud (Celular o Computador) -->
+    <div id="modal-signature" class="modal">
+        <div class="modal-content card modal-signature-content">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-file-signature text-gradient"></i> Firma Digital de Solicitud</h3>
+                <button class="close-modal-sig btn-icon" id="btn-close-sig-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body signature-modal-body">
+                <div class="modal-student-selector">
+                    <label for="modal-sig-student-select"><i class="fa-solid fa-user-check"></i> Selecciona o confirma tu Nombre / Código:</label>
+                    <select id="modal-sig-student-select">
+                        <option value="">-- Selecciona tu nombre de la lista --</option>
+                    </select>
+                </div>
+
+                <div class="signing-subjects-box" id="modal-sig-subjects-summary">
+                    <span>Materias que respaldarás con tu firma:</span>
+                    <div id="modal-sig-subjects-list" style="margin-top: 0.25rem; font-weight: 600;">Ninguna materia seleccionada aún.</div>
+                </div>
+
+                <div class="signature-box-wrapper" style="margin-bottom: 0;">
+                    <div class="signature-box-header">
+                        <label for="sig-canvas-modal"><i class="fa-solid fa-signature"></i> Dibuja tu firma abajo:</label>
+                        <button type="button" class="btn-clear-sig" id="btn-clear-sig-modal" title="Borrar trazo">
+                            <i class="fa-solid fa-rotate-left"></i> Borrar
+                        </button>
+                    </div>
+                    <div class="canvas-pad-container modal-canvas-wrapper" id="canvas-pad-container-modal">
+                        <canvas id="sig-canvas-modal" class="signature-canvas"></canvas>
+                        <div class="signature-guide-line" style="bottom: 28px;"></div>
+                        <div class="signature-canvas-placeholder" id="sig-placeholder-modal">
+                            <i class="fa-solid fa-pen-nib"></i> Firma aquí con tu dedo o ratón
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-signature-actions">
+                    <button type="button" class="btn btn-secondary btn-sm" id="btn-cancel-sig-modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="btn-save-sig-modal">
+                        <i class="fa-solid fa-check"></i> Guardar y Respaldar Carta
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="app.js"></script>
+</body>
+</html>
