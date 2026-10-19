@@ -386,7 +386,33 @@ function resetForm() {
 
 // Actualizar toda la interfaz de usuario
 function updateUI() {
-    totalRegistrationsBadge.textContent = `${registrations.length} Estudiantes`;
+    const totalCount = registrations.length;
+    const signedCount = registrations.filter(r => r.signature && String(r.signature).trim() !== '').length;
+    const pendingCount = Math.max(0, totalCount - signedCount);
+    const percent = totalCount > 0 ? Math.round((signedCount / totalCount) * 100) : 0;
+
+    // Actualizar Banner de Impacto (Hero Stats)
+    const elReg = document.getElementById('hero-count-registered');
+    if (elReg) elReg.textContent = totalCount;
+
+    const elSig = document.getElementById('hero-count-signed');
+    if (elSig) elSig.textContent = signedCount;
+
+    const elPct = document.getElementById('hero-count-percent');
+    if (elPct) elPct.textContent = `${percent}%`;
+
+    const elBar = document.getElementById('hero-progress-bar');
+    if (elBar) elBar.style.width = `${percent}%`;
+
+    const elPend = document.getElementById('hero-count-pending');
+    if (elPend) {
+        elPend.innerHTML = `<i class="fa-regular fa-clock"></i> <strong>${pendingCount}</strong> pendientes por firmar`;
+    }
+
+    if (totalRegistrationsBadge) {
+        totalRegistrationsBadge.textContent = `${totalCount} Estudiantes`;
+    }
+
     renderScores();
     renderStudentsTable();
 }

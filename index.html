@@ -45,6 +45,69 @@
         <!-- Área de Contenido Principal -->
         <div class="main-content-area">
 
+            <!-- BANNER DE IMPACTO: CONTADOR DE FIRMANTES VS INSCRITOS -->
+            <section class="hero-stats-banner animate-fade-in delay-1">
+                <div class="hero-stats-left">
+                    <!-- Tarjeta 1: Inscritos Totales -->
+                    <div class="hero-stat-box hero-stat-registered">
+                        <div class="hero-stat-icon icon-users">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <div class="hero-stat-details">
+                            <span class="hero-stat-label">Inscritos Totales</span>
+                            <div class="hero-stat-number-row">
+                                <span id="hero-count-registered" class="hero-stat-number">0</span>
+                                <span class="hero-stat-tag">alumnos</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Separador VS -->
+                    <div class="hero-stat-vs">
+                        <span>VS</span>
+                    </div>
+
+                    <!-- Tarjeta 2: Firmas Registradas -->
+                    <div class="hero-stat-box hero-stat-signed">
+                        <div class="hero-stat-icon icon-signatures">
+                            <i class="fa-solid fa-file-signature"></i>
+                        </div>
+                        <div class="hero-stat-details">
+                            <span class="hero-stat-label">Firmas Registradas</span>
+                            <div class="hero-stat-number-row">
+                                <span id="hero-count-signed" class="hero-stat-number stat-gold">0</span>
+                                <span class="hero-stat-tag tag-signed">con firma</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Centro: Barra de Progreso y Balance -->
+                <div class="hero-stats-center">
+                    <div class="hero-progress-meta">
+                        <span class="progress-title"><i class="fa-solid fa-chart-pie"></i> Avance de Firmas</span>
+                        <span id="hero-count-percent" class="progress-percent-badge">0%</span>
+                    </div>
+                    <div class="hero-progress-track">
+                        <div id="hero-progress-bar" class="hero-progress-fill" style="width: 0%;"></div>
+                    </div>
+                    <div class="hero-progress-subtext">
+                        <span id="hero-count-pending"><i class="fa-regular fa-clock"></i> 0 pendientes por firmar</span>
+                    </div>
+                </div>
+
+                <!-- Derecha: Acciones Rápidas -->
+                <div class="hero-stats-right">
+                    <button type="button" class="btn btn-hero-primary" onclick="openSignatureModal()" title="Firmar la solicitud formal con tu dedo o mouse">
+                        <i class="fa-solid fa-pen-nib"></i>
+                        <span>Firmar Mi Carta</span>
+                    </button>
+                    <a href="cartas_solicitud_imprimibles.html" target="_blank" class="btn btn-hero-secondary" title="Ver e imprimir cartas formales dirigidas al Director de Programa">
+                        <i class="fa-solid fa-file-contract"></i>
+                        <span>Cartas (&ge;10)</span>
+                    </a>
+                </div>
+            </section>
 
         <!-- Main Grid Layout -->
         <main class="main-grid">
