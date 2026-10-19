@@ -82,23 +82,28 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // Cargar registros desde servidor o localStorage
 async function loadData() {
+    loadFromLocalStorage(); // Cargar firmas y registros locales de inmediato
+
     if (BACKEND_URL) {
         try {
             const response = await fetch(BACKEND_URL);
             if (response.ok) {
-                registrations = await response.json();
+                const cloudData = await response.json();
+                // Combinar datos de la nube preservando firmas locales
+                registrations = cloudData.map(remote => {
+                    const local = registrations.find(r => r.code === remote.code);
+                    return {
+                        ...remote,
+                        signature: remote.signature || (local && local.signature ? local.signature : '')
+                    };
+                });
                 updateUI();
                 saveToLocalStorage(); // Mantener copia local actualizada
                 prefillActiveStudentPreferences();
-            } else {
-                loadFromLocalStorage();
             }
         } catch (e) {
             console.error("Error obteniendo datos del servidor, usando local.", e);
-            loadFromLocalStorage();
         }
-    } else {
-        loadFromLocalStorage();
     }
 }
 
@@ -159,7 +164,14 @@ async function saveData(studentData = null, isDelete = false, idToDelete = null)
             // Recargar datos desde el servidor para confirmar sincronización
             const response = await fetch(BACKEND_URL);
             if (response.ok) {
-                registrations = await response.json();
+                const cloudData = await response.json();
+                registrations = cloudData.map(remote => {
+                    const local = registrations.find(r => r.code === remote.code);
+                    return {
+                        ...remote,
+                        signature: remote.signature || (local && local.signature ? local.signature : '')
+                    };
+                });
                 updateUI();
                 saveToLocalStorage();
             }
