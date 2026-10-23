@@ -100,6 +100,9 @@ async function loadData() {
                 updateUI();
                 saveToLocalStorage(); // Mantener copia local actualizada
                 prefillActiveStudentPreferences();
+                
+                // Auto-sincronizar firmas locales que falten en la nube
+                checkAndSyncPendingSignatures(cloudData);
             }
         } catch (e) {
             console.error("Error obteniendo datos del servidor, usando local.", e);
@@ -146,20 +149,54 @@ function prefillActiveStudentPreferences() {
     }
 }
 
+// Sincronización robusta con Google Sheets (soporta celulares, keepalive y reintentos)
+async function syncStudentToCloud(studentData = null, isDelete = false, idToDelete = null) {
+    if (!BACKEND_URL) return true;
+
+    const payload = isDelete 
+        ? { action: 'delete', id: idToDelete }
+        : { action: 'add', student: studentData };
+
+    const bodyStr = JSON.stringify(payload);
+    // keepalive está limitado por el navegador a 64KB. Solo usarlo si el payload es menor a 60KB
+    const canUseKeepalive = bodyStr.length < 60000;
+
+    let lastError = null;
+    for (let attempt = 1; attempt <= 2; attempt++) {
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 seg timeout
+
+            const fetchOptions = {
+                method: 'POST',
+                body: bodyStr,
+                signal: controller.signal
+            };
+            if (canUseKeepalive) {
+                fetchOptions.keepalive = true;
+            }
+
+            await fetch(BACKEND_URL, fetchOptions);
+            clearTimeout(timeoutId);
+            return true;
+        } catch (err) {
+            lastError = err;
+            console.warn(`[Sync] Intento ${attempt} fallido al enviar a la nube:`, err);
+            if (attempt < 2) {
+                await new Promise(r => setTimeout(r, 800));
+            }
+        }
+    }
+    throw lastError || new Error("Error de conexión con la base de datos.");
+}
+
 // Guardar registros en localStorage y sincronizar en la nube
 async function saveData(studentData = null, isDelete = false, idToDelete = null) {
     saveToLocalStorage();
     
     if (BACKEND_URL) {
         try {
-            const payload = isDelete 
-                ? { action: 'delete', id: idToDelete }
-                : { action: 'add', student: studentData };
-
-            await fetch(BACKEND_URL, {
-                method: 'POST',
-                body: JSON.stringify(payload)
-            });
+            await syncStudentToCloud(studentData, isDelete, idToDelete);
             
             // Recargar datos desde el servidor para confirmar sincronización
             const response = await fetch(BACKEND_URL);
@@ -174,10 +211,44 @@ async function saveData(studentData = null, isDelete = false, idToDelete = null)
                 });
                 updateUI();
                 saveToLocalStorage();
+                checkAndSyncPendingSignatures(cloudData);
             }
+            return true;
         } catch (e) {
             console.error("Error sincronizando con el servidor:", e);
+            return false;
         }
+    }
+    return true;
+}
+
+// Auto-sincronizar firmas pendientes (si existen en el celular pero faltan en la nube)
+async function checkAndSyncPendingSignatures(cloudData) {
+    if (!Array.isArray(cloudData) || !BACKEND_URL) return;
+    try {
+        const localRaw = localStorage.getItem(LOCAL_STORAGE_KEY);
+        if (!localRaw) return;
+        const localList = JSON.parse(localRaw);
+        
+        const pending = localList.filter(loc => {
+            if (!loc.signature || String(loc.signature).trim() === '') return false;
+            const rem = cloudData.find(c => c.code === loc.code);
+            return !rem || !rem.signature || String(rem.signature).trim() === '';
+        });
+
+        if (pending.length > 0) {
+            console.log(`[Auto-Sync] Se detectaron ${pending.length} firmas guardadas en este equipo no presentes en la nube. Sincronizando...`);
+            for (const st of pending) {
+                try {
+                    await syncStudentToCloud(st, false);
+                    console.log(`[Auto-Sync] Firma de ${st.name} sincronizada exitosamente.`);
+                } catch(e) {
+                    console.warn(`[Auto-Sync] Reintento pendiente para ${st.name}:`, e);
+                }
+            }
+        }
+    } catch(err) {
+        console.warn("[Auto-Sync] Error verificando firmas pendientes:", err);
     }
 }
 
@@ -326,6 +397,14 @@ async function handleFormSubmit(e) {
         return;
     }
 
+    const submitBtn = registrationForm.querySelector('button[type="submit"]');
+    const origBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Registrando y sincronizando con la nube...';
+        submitBtn.style.opacity = '0.9';
+    }
+
     const selectedSubjectCodes = checkedCheckboxes.map(cb => cb.value);
 
     // Capturar firma si fue dibujada
@@ -344,7 +423,6 @@ async function handleFormSubmit(e) {
             registrations[existingIndex].signature = drawnSig;
         }
         targetStudent = registrations[existingIndex];
-        showToast('Registro y firma actualizados con éxito.', 'success');
     } else {
         // Crear nuevo registro
         targetStudent = {
@@ -357,7 +435,6 @@ async function handleFormSubmit(e) {
             signature: drawnSig
         };
         registrations.push(targetStudent);
-        showToast('¡Estudiante y firma registrados con éxito!', 'success');
     }
 
     // Actualizar interfaz local inmediatamente
@@ -366,8 +443,23 @@ async function handleFormSubmit(e) {
     // Guardar el código en localStorage para recordar este dispositivo
     localStorage.setItem('fet_vacacionales_active_student_code', code);
 
-    // Guardar e intentar sincronizar
-    await saveData(targetStudent, false);
+    // Guardar y sincronizar con la nube
+    try {
+        const ok = await saveData(targetStudent, false);
+        if (ok) {
+            showToast(existingIndex > -1 ? '¡Registro y firma actualizados en la nube!' : '¡Estudiante y firma registrados con éxito en la nube!', 'success');
+        } else {
+            showToast('Guardado en este celular. Se sincronizará con la nube al mejorar la conexión.', 'warning');
+        }
+    } catch(err) {
+        showToast('Guardado en este celular. Se sincronizará automáticamente.', 'warning');
+    } finally {
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = origBtnHtml;
+            submitBtn.style.opacity = '';
+        }
+    }
 }
 
 // Reiniciar formulario
@@ -787,7 +879,16 @@ function createSignaturePad(canvasId, placeholderId, clearBtnId) {
 
     function toDataURL() {
         if (!hasDrawn) return '';
-        return canvas.toDataURL('image/png');
+        // Normalizar a dimensiones estándar óptimas (450x180) para celular y PC
+        // Garantiza peso ligero (<15KB), envío instantáneo en 3G/4G y compatibilidad keepalive
+        const targetW = 450;
+        const targetH = 180;
+        const normCanvas = document.createElement('canvas');
+        normCanvas.width = targetW;
+        normCanvas.height = targetH;
+        const normCtx = normCanvas.getContext('2d');
+        normCtx.drawImage(canvas, 0, 0, targetW, targetH);
+        return normCanvas.toDataURL('image/png');
     }
 
     function loadFromDataURL(dataUrl) {
@@ -880,7 +981,7 @@ async function saveModalSignature() {
 
     const student = registrations.find(r => r.code === selectedCode);
     if (!student) {
-        showToast('Estudiante no encontrado.', 'error');
+        showToast('Estudiante no encontrado en la lista.', 'error');
         return;
     }
 
@@ -892,15 +993,63 @@ async function saveModalSignature() {
     const sigData = modalSigPad.toDataURL();
     student.signature = sigData;
 
-    // Recordar en este dispositivo
+    // 1. Guardar de inmediato en localStorage y actualizar UI (reserva local infalible)
     localStorage.setItem('fet_vacacionales_active_student_code', student.code);
-
+    saveToLocalStorage();
     updateUI();
-    showToast(`¡Firma guardada exitosamente para ${student.name}!`, 'success');
-    closeSignatureModal();
 
-    // Sincronizar en la nube
-    await saveData(student, false);
+    // 2. Bloquear UI del modal con spinner para impedir cierres prematuros en celulares
+    const origHtml = btnSaveSigModal.innerHTML;
+    btnSaveSigModal.disabled = true;
+    if (btnCancelSigModal) btnCancelSigModal.disabled = true;
+    if (btnCloseSigModal) btnCloseSigModal.disabled = true;
+    if (modalSigStudentSelect) modalSigStudentSelect.disabled = true;
+    btnSaveSigModal.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Guardando y subiendo a la nube...';
+    btnSaveSigModal.style.opacity = '0.9';
+
+    try {
+        // 3. Sincronizar en la nube con reintento automático y keepalive
+        await syncStudentToCloud(student, false);
+
+        // 4. Confirmación visual verde antes de cerrar
+        btnSaveSigModal.innerHTML = '<i class="fa-solid fa-circle-check"></i> ¡Sincronizado con éxito en la nube!';
+        btnSaveSigModal.style.background = '#10b981';
+        btnSaveSigModal.style.borderColor = '#10b981';
+        showToast(`¡Firma respaldada y sincronizada exitosamente para ${student.name}!`, 'success');
+
+        // Pausa de 850ms para que el estudiante certifique el visto bueno
+        setTimeout(() => {
+            closeSignatureModal();
+            // Restaurar estado del botón
+            btnSaveSigModal.disabled = false;
+            if (btnCancelSigModal) btnCancelSigModal.disabled = false;
+            if (btnCloseSigModal) btnCloseSigModal.disabled = false;
+            if (modalSigStudentSelect) modalSigStudentSelect.disabled = false;
+            btnSaveSigModal.innerHTML = origHtml;
+            btnSaveSigModal.style.background = '';
+            btnSaveSigModal.style.borderColor = '';
+            btnSaveSigModal.style.opacity = '';
+        }, 850);
+
+        // Notificar en background
+        fetch(BACKEND_URL).then(r => r.json()).then(cloudData => {
+            checkAndSyncPendingSignatures(cloudData);
+        }).catch(() => {});
+
+    } catch (err) {
+        console.error("Fallo al subir firma a la nube:", err);
+        // Desbloquear controles para permitir reintento manual
+        btnSaveSigModal.disabled = false;
+        if (btnCancelSigModal) btnCancelSigModal.disabled = false;
+        if (btnCloseSigModal) btnCloseSigModal.disabled = false;
+        if (modalSigStudentSelect) modalSigStudentSelect.disabled = false;
+        btnSaveSigModal.style.opacity = '';
+        btnSaveSigModal.style.background = '#dc2626';
+        btnSaveSigModal.style.borderColor = '#dc2626';
+        btnSaveSigModal.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Reintentar Sincronización';
+
+        showToast('Tu firma está guardada en este celular, pero no se pudo subir a la nube por mala conexión. Presiona "Reintentar Sincronización".', 'error');
+    }
 }
 
 function closeSignatureModal() {
