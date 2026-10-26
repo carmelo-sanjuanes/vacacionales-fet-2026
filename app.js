@@ -29,7 +29,7 @@ const SUBJECTS = [
     { code: 'ELE0300745', name: 'GENERACIÓN TÉRMICA', semester: 9 },
     { code: 'ELE0300747', name: 'OPTATIVA PROFESIONAL II', semester: 9 },
     { code: 'ELE0300837', name: 'ÉTICA PROFESIONAL', semester: 9 },
-    { code: 'ELE0300116', name: 'ELECTIVA III-MATEMATICA FINANCIERA', semester: 9 }
+    { code: 'ELE0300116', name: 'ELECTIVA III - MARKETING PARA EMPRESARIOS', semester: 9 }
 ];
 
 // Configuración de la App
@@ -603,7 +603,16 @@ function renderStudentsTable() {
         // Crear mini-tags de las materias
         const subjectTagsHtml = student.subjects.map(code => {
             const subj = SUBJECTS.find(s => s.code === code);
-            const shortName = subj ? subj.name.split(' ')[0] : 'Materia';
+            let shortName = 'Materia';
+            if (subj) {
+                if (subj.code === 'ELE0300116') {
+                    shortName = 'Marketing';
+                } else if (subj.name.includes('-')) {
+                    shortName = subj.name.split('-')[1].trim().split(' ')[0];
+                } else {
+                    shortName = subj.name.split(' ')[0];
+                }
+            }
             return `<span class="subject-mini-tag" title="${subj ? subj.name : code}">${code} (${shortName})</span>`;
         }).join(' ');
 
